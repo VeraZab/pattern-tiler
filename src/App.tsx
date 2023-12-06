@@ -19,6 +19,10 @@ const App = () => {
     const canvas = document.getElementById('canvas');
     if (canvas) {
       // @ts-ignore
+      canvas.width = printWidth;
+      // @ts-ignore
+      canvas.height = printHeight;
+      // @ts-ignore
       setCtx(canvas.getContext('2d'));
     }
   }, []);
@@ -33,36 +37,34 @@ const App = () => {
 
   const tile = () => {
     if (imageUrl && ctx) {
-      const tempCanvas = document.createElement('canvas');
-      const tempCtx = tempCanvas.getContext('2d');
-      const targetPixelWidth = desiredImgWidth * desiredDPI;
-
       const img = new Image();
-      img.src = imageUrl;
-      img.width = desiredImgWidth;
-      img.height = desiredImgWidth;
-
-      const numTimesImgFitsHorizontally = Math.ceil(printWidth / targetPixelWidth);
-      const numTimesImgFitsVertically = Math.ceil(printHeight / targetPixelWidth);
-
-      if (tempCtx) {
+      img.onload = () => {
+        const targetPixelWidth = desiredImgWidth * desiredDPI;
+        const numTimesImgFitsHorizontally = Math.ceil(printWidth / targetPixelWidth);
+        const numTimesImgFitsVertically = Math.ceil(printHeight / targetPixelWidth);
+        const tempCanvas = document.createElement('canvas');
         // @ts-ignore
-        tempCtx.width = targetPixelWidth * numTimesImgFitsHorizontally;
+        tempCanvas.width = targetPixelWidth * numTimesImgFitsHorizontally;
         // @ts-ignore
-        tempCtx.height = targetPixelWidth * numTimesImgFitsVertically;
+        tempCanvas.height = targetPixelWidth * numTimesImgFitsVertically;
+        // @ts-ignore
+        const tempCtx = tempCanvas.getContext('2d');
 
-        for (let x = 0; x < numTimesImgFitsHorizontally; x++) {
-          for (let y = 0; y < numTimesImgFitsVertically; y++) {
-            // @ts-ignore
-            tempCtx.drawImage(img, x * img.width, y * img.width, img.width, img.height);
+        if (tempCtx) {
+          for (let x = 0; x < numTimesImgFitsHorizontally; x++) {
+            for (let y = 0; y < numTimesImgFitsVertically; y++) {
+              // @ts-ignore
+              tempCtx.drawImage(img, x * img.width, y * img.width, img.width, img.height);
+            }
           }
         }
+
+        // crop tempCanvas according to final needed dimensionss
+        // @ts-ignore
+        ctx.drawImage(tempCanvas, 0, 0, printWidth, printHeight, 0, 0, printWidth, printHeight);
       }
 
-      // crop tempCanvas according to final needed dimensionss
-      // @ts-ignore
-      ctx.drawImage(tempCanvas, 0, 0, printWidth, printHeight, 0, 0, printWidth, printHeight);
-
+      img.src = imageUrl;
     }
   }
 
@@ -99,7 +101,7 @@ const App = () => {
       }}>
       <Box sx={{ display: 'flex', height: '500px', width: '90%' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
-          <canvas id="canvas" ></canvas>
+          <canvas id="canvas" style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
           {imageUrl && <img src={imageUrl} alt="Uploaded" style={{
