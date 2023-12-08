@@ -1,28 +1,36 @@
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import { ChangeEvent, useEffect, useState } from 'react';
-import ImageInput from './components/ImageInput';
 import Layout from './components/Layout';
 import Canvas from './components/Canvas';
 import Controls from './components/Controls';
+import { ThemeProvider } from '@emotion/react';
+import { theme } from './theme'
 
 
 const App = () => {
   return (
-    <Layout>
-      <Box
-        sx={{
-          display: 'flex',
-          overflowY: 'auto',
-          padding: '20px 0 ',
+    <ThemeProvider theme={theme}>
+      <Layout>
+        <Box
+          sx={
+            theme => (
+              {
+                display: 'flex',
+                flex: 1,
+                overflowY: 'auto',
+                padding: `${theme.spacing(2)} 0`,
+                [theme.breakpoints.down('sm')]: {
+                  flexDirection: 'column-reverse',
 
-        }}
-      >
-        <Canvas />
-        <Controls />
-      </Box>
-    </Layout>
+                }
+              }
+            )
+          }
+        >
+          <Canvas />
+          <Controls />
+        </Box>
+      </Layout>
+    </ThemeProvider >
   );
 }
 

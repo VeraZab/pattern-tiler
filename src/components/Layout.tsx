@@ -7,20 +7,21 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <Box
             className="container"
-            sx={{
-                display: 'flex',
-                height: '100vh',
-                flexDirection: 'column',
-                padding: '20px',
-                overflow: 'hidden',
-                boxSizing: 'border-box'
-            }}>
-
-
+            sx={
+                theme => (
+                    {
+                        display: 'flex',
+                        height: '100vh',
+                        flexDirection: 'column',
+                        padding: theme.spacing(2),
+                        overflow: 'hidden',
+                        boxSizing: 'border-box'
+                    }
+                )
+            }
+        >
             <Header />
-
             {children}
-
             <Footer />
 
         </Box>

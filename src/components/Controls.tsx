@@ -92,7 +92,21 @@ const Controls = () => {
     }
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
+        <Box
+            sx={
+                theme => (
+                    {
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '50%',
+                        [theme.breakpoints.down('sm')]: {
+                            width: '100%',
+                        }
+                    }
+                )
+            }
+        >
 
             <Box>
                 <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
@@ -102,7 +116,7 @@ const Controls = () => {
                 <Button onClick={tile}>Compute</Button>
                 <Button onClick={download}>Download</Button>
             </Box>
-        </Box>
+        </Box >
 
     );
 }

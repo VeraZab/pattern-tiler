@@ -16,13 +16,33 @@ const Header = () => {
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <img src="pattern-tiler-logo.png" style={{ width: '50px', paddingRight: '15px' }} />
-                <Box sx={{ fontSize: '30px', fontWeight: 'bold', fontFamily: 'monospace', }}>Pattern Tiler</Box>
+                <Box
+                    sx={theme => ({
+                        fontSize: '30px',
+                        fontWeight: 'bold',
+                        fontFamily: 'monospace',
+
+                    })}
+                >
+                    Pattern Tiler
+                </Box>
             </Box>
 
             <Box>
                 <Tooltip title={aboutTilemaker}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Box sx={{ paddingRight: '15px' }}>About this tool</Box>
+                        <Box
+                            sx={
+                                theme => ({
+                                    paddingRight: '15px',
+                                    [theme.breakpoints.down('sm')]: {
+                                        display: 'none'
+                                    }
+                                })
+                            }
+                        >
+                            About this tool
+                        </Box>
                         <HelpIcon />
                     </Box>
                 </Tooltip>
