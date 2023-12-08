@@ -12,13 +12,13 @@ const Header = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            height: '45px',
-            padding: '20px'
         }}>
+
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <img src="pattern-tiler-logo.png" style={{ width: '50px', paddingRight: '15px' }} />
                 <Box sx={{ fontSize: '30px', fontWeight: 'bold', fontFamily: 'monospace', }}>Pattern Tiler</Box>
             </Box>
+
             <Box>
                 <Tooltip title={aboutTilemaker}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
