@@ -4,6 +4,8 @@ import Button from '@mui/material/Button';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ImageInput from './components/ImageInput';
 import Layout from './components/Layout';
+import Canvas from './components/Canvas';
+import Controls from './components/Controls';
 
 
 const App = () => {
@@ -93,26 +95,15 @@ const App = () => {
 
   return (
     <Layout>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
-        <canvas id="canvas" style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
-        {imageUrl && (
-          <img
-            src={imageUrl}
-            alt="Uploaded"
-            style={{
-              objectFit: 'cover', maxWidth: '100%', maxHeight: '100%'
-            }} />
-        )}
-        <Box>
-          <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-            Upload file
-            <ImageInput type="file" onChange={handleFileChange} />
-          </Button>
-          <Button onClick={tile}>Compute</Button>
-          <Button onClick={download}>Download</Button>
-        </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          overflowY: 'auto',
+          padding: '30px'
+        }}
+      >
+        <Canvas />
+        <Controls />
       </Box>
     </Layout>
   );

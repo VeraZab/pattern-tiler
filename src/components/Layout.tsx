@@ -19,17 +19,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
             <Header />
 
-
-            <Box
-                sx={{
-                    display: 'flex',
-                    flex: 1,
-                    overflow: 'auto'
-                }}
-            >
-                {children}
-            </Box>
-
+            {children}
 
             <Footer />
 
