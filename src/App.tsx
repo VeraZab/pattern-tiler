@@ -2,8 +2,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { ChangeEvent, useEffect, useState } from 'react';
-import './App.css';
 import ImageInput from './components/ImageInput';
+import Layout from './components/Layout';
 
 const App = () => {
   const [ctx, setCtx] = useState(null);
@@ -91,55 +91,29 @@ const App = () => {
   }
 
   return (
-    <Box
-      className="container"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: '100vh',
-      }}>
-
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100vw',
-        height: '45px',
-        padding: '20px'
-      }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <img src="pattern-tiler-logo.png" style={{ width: '80px' }} />
-          <Box sx={{ fontSize: '30px', fontWeight: 'bold', fontFamily: 'monospace' }}>Pattern Tiler</Box>
-        </Box>
-        <Box>About</Box>
+    <Layout>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
+        <canvas id="canvas" style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
       </Box>
-
-      <Box sx={{ display: 'flex', height: '500px', width: '90%' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
-          <canvas id="canvas" style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
-          {imageUrl && (
-            <img
-              src={imageUrl}
-              alt="Uploaded"
-              style={{
-                objectFit: 'cover', maxWidth: '100%', maxHeight: '100%'
-              }} />
-          )}
-          <Box>
-            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-              Upload file
-              <ImageInput type="file" onChange={handleFileChange} />
-            </Button>
-            <Button onClick={tile}>Compute</Button>
-            <Button onClick={download}>Download</Button>
-          </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt="Uploaded"
+            style={{
+              objectFit: 'cover', maxWidth: '100%', maxHeight: '100%'
+            }} />
+        )}
+        <Box>
+          <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+            Upload file
+            <ImageInput type="file" onChange={handleFileChange} />
+          </Button>
+          <Button onClick={tile}>Compute</Button>
+          <Button onClick={download}>Download</Button>
         </Box>
       </Box>
-    </Box>
-
+    </Layout>
   );
 }
 
