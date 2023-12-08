@@ -7,7 +7,7 @@ import ImageInput from './ImageInput';
 
 
 const Controls = () => {
-    const [ctx, setCtx] = useState(null);
+    const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const desiredImgWidth = 3;
     const desiredDPI = 300;
@@ -15,22 +15,31 @@ const Controls = () => {
     const printHeight = 8775;
 
     useEffect(() => {
-        const canvas = document.getElementById('canvas');
+        const canvas = document.getElementById('canvas') as HTMLCanvasElement | null;
         if (canvas) {
-            // @ts-ignore
             canvas.width = printWidth;
-            // @ts-ignore
             canvas.height = printHeight;
-            // @ts-ignore
             setCtx(canvas.getContext('2d'));
         }
     }, []);
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
-        if (file) {
+        if (file && ctx) {
             const imageUrl = URL.createObjectURL(file);
             setImageUrl(imageUrl);
+
+            const img = new Image();
+            const targetPixelWidth = printWidth;
+            img.width = targetPixelWidth;
+            img.height = targetPixelWidth;
+
+            img.onload = () => {
+                // @ts-ignore
+                ctx.drawImage(img, 0, 0);
+            }
+
+            img.src = imageUrl;
         }
     };
 
