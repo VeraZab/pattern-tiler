@@ -9,7 +9,7 @@ const Canvas = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '50%',
-                backgroundColor: 'grey'
+                backgroundColor: '#bababa'
             }}
         >
             <canvas id="canvas" style={{ objectFit: 'contain', width: '100%', height: '100%' }} />

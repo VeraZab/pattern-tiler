@@ -93,14 +93,7 @@ const Controls = () => {
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
-            {imageUrl && (
-                <img
-                    src={imageUrl}
-                    alt="Uploaded"
-                    style={{
-                        objectFit: 'cover', maxWidth: '100%', maxHeight: '100%'
-                    }} />
-            )}
+
             <Box>
                 <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
                     Upload file
