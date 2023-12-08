@@ -11,7 +11,7 @@ const Footer = () => {
             }}
         >
             <Link href="https://github.com/VeraZab/pattern-tiler" target="_blank">
-                <img src="github.png" style={{ width: '25px', height: '25px' }} />
+                <img src="github.png" style={{ width: '20px', height: '20px' }} />
             </Link>
         </Box>
 

@@ -3,25 +3,22 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 
-const FOOTER_HEIGHT = '30px';
-const HEADER_HEIGHT = '45px';
-const CONTENT_PADDING = '20px';
-
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <Box
             className="container"
             sx={{
                 display: 'flex',
-                flexDirection: 'column',
                 height: '100vh',
-                padding: CONTENT_PADDING,
-                overflow: 'hidden'
+                flexDirection: 'column',
+                padding: '20px',
+                overflow: 'hidden',
+                boxSizing: 'border-box'
             }}>
 
-            <Box sx={{ height: HEADER_HEIGHT }}>
-                <Header />
-            </Box>
+
+            <Header />
+
 
             <Box
                 sx={{
@@ -33,9 +30,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 {children}
             </Box>
 
-            <Box sx={{ height: FOOTER_HEIGHT }}>
-                <Footer />
-            </Box>
+
+            <Footer />
+
         </Box>
 
     );
