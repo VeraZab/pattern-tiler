@@ -1,19 +1,17 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import './App.css';
 import ImageInput from './components/ImageInput';
 
 const App = () => {
   const [ctx, setCtx] = useState(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [originalImgSize, setOriginalImgSize] = useState({ width: 0, height: 0 });
-  const desiredImgWidth = 4;
+  const desiredImgWidth = 3;
   const desiredDPI = 300;
   const printWidth = 6075;
   const printHeight = 8775;
-  const printDPI = 300;
 
   useEffect(() => {
     const canvas = document.getElementById('canvas');
@@ -38,8 +36,11 @@ const App = () => {
   const tile = () => {
     if (imageUrl && ctx) {
       const img = new Image();
+      const targetPixelWidth = desiredImgWidth * desiredDPI;
+      img.width = targetPixelWidth;
+      img.height = targetPixelWidth;
+
       img.onload = () => {
-        const targetPixelWidth = desiredImgWidth * desiredDPI;
         const numTimesImgFitsHorizontally = Math.ceil(printWidth / targetPixelWidth);
         const numTimesImgFitsVertically = Math.ceil(printHeight / targetPixelWidth);
         const tempCanvas = document.createElement('canvas');
@@ -91,24 +92,42 @@ const App = () => {
 
   return (
     <Box
-      className="App"
+      className="container"
       sx={{
         display: 'flex',
+        flexDirection: 'column',
         width: '100%',
         height: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center'
       }}>
+
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100vw',
+        height: '45px',
+        padding: '20px'
+      }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <img src="pattern-tiler-logo.png" style={{ width: '80px' }} />
+          <Box sx={{ fontSize: '30px', fontWeight: 'bold', fontFamily: 'monospace' }}>Pattern Tiler</Box>
+        </Box>
+        <Box>About</Box>
+      </Box>
+
       <Box sx={{ display: 'flex', height: '500px', width: '90%' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
           <canvas id="canvas" style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '50%' }}>
-          {imageUrl && <img src={imageUrl} alt="Uploaded" style={{
-            objectFit: 'cover', maxWidth: '100%', maxHeight: '100%'
-          }} onLoad={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-            setOriginalImgSize({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalWidth });
-          }} />}
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              alt="Uploaded"
+              style={{
+                objectFit: 'cover', maxWidth: '100%', maxHeight: '100%'
+              }} />
+          )}
           <Box>
             <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
               Upload file
@@ -120,6 +139,7 @@ const App = () => {
         </Box>
       </Box>
     </Box>
+
   );
 }
 
