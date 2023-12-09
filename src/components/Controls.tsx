@@ -1,24 +1,24 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { InputAdornment } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ImageInput from './ImageInput';
-
-
 
 const Controls = () => {
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const desiredImgWidth = 3;
-    const desiredDPI = 300;
-    const printWidth = 6075;
-    const printHeight = 8775;
+    const [desiredImgWidth, setDesiredImgWidth] = useState(3);
+    const [desiredDPI, setDesiredDPI] = useState(300);
+    const [targetWidth, settargetWidth] = useState(6075);
+    const [targetHeight, settargetHeight] = useState(8775);
 
     useEffect(() => {
         const canvas = document.getElementById('canvas') as HTMLCanvasElement | null;
         if (canvas) {
-            canvas.width = printWidth;
-            canvas.height = printHeight;
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
             setCtx(canvas.getContext('2d'));
         }
     }, []);
@@ -30,7 +30,7 @@ const Controls = () => {
             setImageUrl(imageUrl);
 
             const img = new Image();
-            const targetPixelWidth = printWidth;
+            const targetPixelWidth = targetWidth;
             img.width = targetPixelWidth;
             img.height = targetPixelWidth;
 
@@ -51,8 +51,8 @@ const Controls = () => {
             img.height = targetPixelWidth;
 
             img.onload = () => {
-                const numTimesImgFitsHorizontally = Math.ceil(printWidth / targetPixelWidth);
-                const numTimesImgFitsVertically = Math.ceil(printHeight / targetPixelWidth);
+                const numTimesImgFitsHorizontally = Math.ceil(targetWidth / targetPixelWidth);
+                const numTimesImgFitsVertically = Math.ceil(targetHeight / targetPixelWidth);
                 const tempCanvas = document.createElement('canvas');
                 // @ts-ignore
                 tempCanvas.width = targetPixelWidth * numTimesImgFitsHorizontally;
@@ -72,7 +72,7 @@ const Controls = () => {
 
                 // crop tempCanvas according to final needed dimensionss
                 // @ts-ignore
-                ctx.drawImage(tempCanvas, 0, 0, printWidth, printHeight, 0, 0, printWidth, printHeight);
+                ctx.drawImage(tempCanvas, 0, 0, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
             }
 
             img.src = imageUrl;
@@ -89,7 +89,7 @@ const Controls = () => {
             const downloadLink = document.createElement('a');
             // @ts-ignore
             downloadLink.href = imageDataURL;
-            downloadLink.download = `tiled-${printWidth}x${printHeight}.png`; // Name of the file to be downloaded
+            downloadLink.download = `tiled-${targetWidth}x${targetHeight}.png`; // Name of the file to be downloaded
 
             // Append the link to the document and trigger a click
             document.body.appendChild(downloadLink);
@@ -106,9 +106,9 @@ const Controls = () => {
                 theme => (
                     {
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        flexDirection: 'column',
                         width: '50%',
+                        backgroundColor: '#bababa',
                         [theme.breakpoints.down('sm')]: {
                             width: '100%',
                         }
@@ -116,15 +116,57 @@ const Controls = () => {
                 )
             }
         >
-
-            <Box>
-                <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-                    Upload file
-                    <ImageInput type="file" onChange={handleFileChange} />
-                </Button>
-                <Button onClick={tile}>Compute</Button>
-                <Button onClick={download}>Download</Button>
+            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                Upload image tile
+                <ImageInput type="file" onChange={handleFileChange} />
+            </Button>
+            <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
+                <TextField
+                    value={targetHeight}
+                    variant="standard"
+                    size="small"
+                    sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
+                    InputProps={{
+                        endAdornment: <InputAdornment position="end">px</InputAdornment>,
+                    }}
+                />
+                <Box sx={{ fontWeight: 'bold' }}>X</Box>
+                <TextField
+                    value={targetWidth}
+                    variant="standard"
+                    size="small"
+                    sx={{ padding: theme => theme.spacing(0, 1), width: '90px' }}
+                    InputProps={{
+                        endAdornment: <InputAdornment position="end">px</InputAdornment>,
+                    }}
+                />
+                <Box sx={{ fontWeight: 'bold' }}>Target Canvas Size (W x H)</Box>
             </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
+                <TextField
+                    value={desiredDPI}
+                    variant="standard"
+                    size="small"
+                    sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
+                />
+                <Box sx={{ fontWeight: 'bold' }}>Desired DPI</Box>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
+                <TextField
+                    value={desiredImgWidth}
+                    variant="standard"
+                    size="small"
+                    sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
+                    InputProps={{
+                        endAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                    }}
+                />
+                <Box sx={{ fontWeight: 'bold' }}>Uploaded image desired side measurement</Box>
+            </Box>
+
+            <Button onClick={tile}>Tile</Button>
+            <Button onClick={download}>Download</Button>
+
         </Box >
 
     );
