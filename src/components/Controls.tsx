@@ -11,6 +11,7 @@ const Controls = () => {
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [fileName, setFileName] = useState<string>('');
     const [desiredImgWidth, setDesiredImgWidth] = useState(3);
     const [desiredDPI, setDesiredDPI] = useState(300);
     const [targetWidth, setTargetWidth] = useState(6075);
@@ -31,6 +32,7 @@ const Controls = () => {
         if (file && ctx) {
             const imageUrl = URL.createObjectURL(file);
             setImageUrl(imageUrl);
+            setFileName(file.name.replace('.png', ''))
 
             const img = new Image();
             const targetPixelWidth = targetWidth;
@@ -92,7 +94,7 @@ const Controls = () => {
             const downloadLink = document.createElement('a');
             // @ts-ignore
             downloadLink.href = imageDataURL;
-            downloadLink.download = `tiled-${targetWidth}x${targetHeight}.png`; // Name of the file to be downloaded
+            downloadLink.download = `${fileName}-tiled-${targetWidth}x${targetHeight}.png`; // Name of the file to be downloaded
 
             // Append the link to the document and trigger a click
             document.body.appendChild(downloadLink);
