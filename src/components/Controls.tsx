@@ -109,6 +109,8 @@ const Controls = () => {
                 theme => (
                     {
                         display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         flexDirection: 'column',
                         width: '50%',
                         backgroundColor: '#bababa',
@@ -119,82 +121,115 @@ const Controls = () => {
                 )
             }
         >
-            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-                Upload image tile
-                <ImageInput type="file" onChange={handleFileChange} />
-            </Button>
-            <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
-                <TextField
-                    value={targetWidth}
-                    variant="standard"
-                    size="small"
-                    sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">px</InputAdornment>,
-                    }}
-                    type='number'
-                    onChange={(e) => {
-                        if (canvas) {
-                            const targetWidth = parseInt(e.target.value)
-                            canvas.width = targetWidth;
-                            setTargetWidth(targetWidth)
-                        }
+            <Box>
 
-                    }}
-                />
-                <Box sx={{ fontWeight: 'bold' }}>X</Box>
-                <TextField
-                    value={targetHeight}
-                    variant="standard"
-                    size="small"
-                    sx={{ padding: theme => theme.spacing(0, 1), width: '90px' }}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">px</InputAdornment>,
-                    }}
-                    type='number'
-                    onChange={(e) => {
-                        if (canvas) {
-                            const targetHeight = parseInt(e.target.value);
-                            canvas.height = targetHeight;
-                            setTargetHeight(targetHeight);
-                        }
-                    }}
-                />
-                <Box sx={{ fontWeight: 'bold' }}>Target Canvas Size (W x H)</Box>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
-                <TextField
-                    value={desiredDPI}
-                    variant="standard"
-                    size="small"
-                    sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
-                    type='number'
-                    onChange={(e) => {
-                        setDesiredDPI(parseInt(e.target.value))
-                    }}
-                />
-                <Box sx={{ fontWeight: 'bold' }}>Desired DPI</Box>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
-                <TextField
-                    value={desiredImgWidth}
-                    variant="standard"
-                    size="small"
-                    sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">inch</InputAdornment>,
-                    }}
-                    type='number'
-                    onChange={(e) => {
-                        setDesiredImgWidth(parseInt(e.target.value))
-                    }}
-                />
-                <Box sx={{ fontWeight: 'bold' }}>Uploaded image desired side measurement</Box>
-            </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
+                    <TextField
+                        value={targetWidth}
+                        variant="standard"
+                        size="small"
+                        sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
+                        }}
+                        type='number'
+                        onChange={(e) => {
+                            if (canvas) {
+                                const targetWidth = parseInt(e.target.value)
+                                canvas.width = targetWidth;
+                                setTargetWidth(targetWidth)
+                            }
 
-            <Button onClick={tile}>Tile</Button>
-            <Button onClick={download}>Download</Button>
+                        }}
+                    />
+                    <Box sx={{ fontWeight: 'bold' }}>X</Box>
+                    <TextField
+                        value={targetHeight}
+                        variant="standard"
+                        size="small"
+                        sx={{ padding: theme => theme.spacing(0, 1), width: '90px' }}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
+                        }}
+                        type='number'
+                        onChange={(e) => {
+                            if (canvas) {
+                                const targetHeight = parseInt(e.target.value);
+                                canvas.height = targetHeight;
+                                setTargetHeight(targetHeight);
+                            }
+                        }}
+                    />
+                    <Box sx={{ fontWeight: 'bold' }}>Target Canvas Size (W x H)</Box>
+                </Box>
 
+
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: theme => theme.spacing(0.5),
+                        marginBottom: theme => theme.spacing(2)
+                    }}
+                >
+                    <TextField
+                        value={desiredDPI}
+                        variant="standard"
+                        size="small"
+                        sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
+                        type='number'
+                        onChange={(e) => {
+                            setDesiredDPI(parseInt(e.target.value))
+                        }}
+                    />
+                    <Box sx={{ fontWeight: 'bold' }}>Desired DPI</Box>
+                </Box>
+                <Box sx={{
+                    marginBottom: theme => theme.spacing(1)
+                }}>
+                    <Button
+                        component="label"
+                        variant="contained"
+                        startIcon={<CloudUploadIcon />}
+
+                    >
+                        Upload image tile
+                        <ImageInput type="file" onChange={handleFileChange} />
+                    </Button>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: theme => theme.spacing(0.5),
+                        marginBottom: theme => theme.spacing(1)
+                    }}>
+                    <TextField
+                        value={desiredImgWidth}
+                        variant="standard"
+                        size="small"
+                        sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                        }}
+                        type='number'
+                        onChange={(e) => {
+                            setDesiredImgWidth(parseInt(e.target.value))
+                        }}
+                    />
+                    <Box sx={{ fontWeight: 'bold' }}>Uploaded image desired side measurement</Box>
+                </Box>
+                <Box sx={{
+                    marginBottom: theme => theme.spacing(1)
+                }}>
+                    <Button onClick={tile}>Tile</Button>
+                </Box>
+                <Box sx={{
+                    marginBottom: theme => theme.spacing(1)
+                }}>
+                    <Button onClick={download}>Download</Button>
+                </Box>
+            </Box>
         </Box >
 
     );
