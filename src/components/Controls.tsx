@@ -3,16 +3,18 @@ import { InputAdornment } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import ImageInput from './ImageInput';
 
+
 const Controls = () => {
+    const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [desiredImgWidth, setDesiredImgWidth] = useState(3);
     const [desiredDPI, setDesiredDPI] = useState(300);
-    const [targetWidth, settargetWidth] = useState(6075);
-    const [targetHeight, settargetHeight] = useState(8775);
+    const [targetWidth, setTargetWidth] = useState(6075);
+    const [targetHeight, setTargetHeight] = useState(8775);
 
     useEffect(() => {
         const canvas = document.getElementById('canvas') as HTMLCanvasElement | null;
@@ -20,6 +22,7 @@ const Controls = () => {
             canvas.width = targetWidth;
             canvas.height = targetHeight;
             setCtx(canvas.getContext('2d'));
+            setCanvas(canvas)
         }
     }, []);
 
@@ -122,22 +125,39 @@ const Controls = () => {
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
                 <TextField
-                    value={targetHeight}
+                    value={targetWidth}
                     variant="standard"
                     size="small"
                     sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">px</InputAdornment>,
                     }}
+                    type='number'
+                    onChange={(e) => {
+                        if (canvas) {
+                            const targetWidth = parseInt(e.target.value)
+                            canvas.width = targetWidth;
+                            setTargetWidth(targetWidth)
+                        }
+
+                    }}
                 />
                 <Box sx={{ fontWeight: 'bold' }}>X</Box>
                 <TextField
-                    value={targetWidth}
+                    value={targetHeight}
                     variant="standard"
                     size="small"
                     sx={{ padding: theme => theme.spacing(0, 1), width: '90px' }}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">px</InputAdornment>,
+                    }}
+                    type='number'
+                    onChange={(e) => {
+                        if (canvas) {
+                            const targetHeight = parseInt(e.target.value);
+                            canvas.height = targetHeight;
+                            setTargetHeight(targetHeight);
+                        }
                     }}
                 />
                 <Box sx={{ fontWeight: 'bold' }}>Target Canvas Size (W x H)</Box>
@@ -148,6 +168,10 @@ const Controls = () => {
                     variant="standard"
                     size="small"
                     sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
+                    type='number'
+                    onChange={(e) => {
+                        setDesiredDPI(parseInt(e.target.value))
+                    }}
                 />
                 <Box sx={{ fontWeight: 'bold' }}>Desired DPI</Box>
             </Box>
@@ -159,6 +183,10 @@ const Controls = () => {
                     sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                    }}
+                    type='number'
+                    onChange={(e) => {
+                        setDesiredImgWidth(parseInt(e.target.value))
                     }}
                 />
                 <Box sx={{ fontWeight: 'bold' }}>Uploaded image desired side measurement</Box>
