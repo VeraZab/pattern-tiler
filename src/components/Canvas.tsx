@@ -13,6 +13,15 @@ interface CanvasProps {
 
 const Canvas = ({ canvasRef, tileHeight, tileWidth, image, canvasWidth, canvasHeight }: CanvasProps) => {
     useEffect(() => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+            canvasRef.current.width = canvasWidth;
+            canvasRef.current.height = canvasHeight;
+        }
+
+    }, []);
+
+    useEffect(() => {
         if (image && canvasRef.current) {
             const ctx = canvasRef.current.getContext('2d');
             if (ctx) {

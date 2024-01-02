@@ -1,10 +1,10 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { theme } from './theme'
 import { ThemeProvider } from '@emotion/react';
 import Box from '@mui/material/Box';
+import { ChangeEvent, useRef, useState } from 'react';
 import Canvas from './components/Canvas';
 import Controls from './components/Controls';
 import Layout from './components/Layout';
+import { theme } from './theme';
 
 
 const App = () => {

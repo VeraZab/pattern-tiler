@@ -58,7 +58,7 @@ const Controls = ({
                     for (let x = 0; x < numTimesImgFitsHorizontally; x++) {
                         for (let y = 0; y < numTimesImgFitsVertically; y++) {
                             // @ts-ignore
-                            tempCtx.drawImage(img, x * img.width, y * img.width, img.width, img.height);
+                            tempCtx.drawImage(img, x * img.width, y * img.height, img.width, img.height);
                         }
                     }
                 }
