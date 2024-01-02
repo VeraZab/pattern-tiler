@@ -3,66 +3,54 @@ import { InputAdornment } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import ImageInput from './ImageInput';
 
+interface ControlsProps {
+    canvasRef: React.RefObject<HTMLCanvasElement>;
+    canvasWidth: number;
+    canvasHeight: number;
+    setCanvasHeight: (height: number) => void;
+    setCanvasWidth: (width: number) => void;
+    tileHeight: number;
+    tileWidth: number;
+    setTileHeight: (height: number) => void;
+    setTileWidth: (width: number) => void;
+    imageUrl: string | null;
+    setImageUrl: (imageUrl: string) => void;
+    fileName: string;
+    handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
 
-const Controls = () => {
-    const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
-    const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [fileName, setFileName] = useState<string>('');
-    const [desiredImgWidth, setDesiredImgWidth] = useState(3);
-    const [desiredDPI, setDesiredDPI] = useState(300);
-    const [targetWidth, setTargetWidth] = useState(6075);
-    const [targetHeight, setTargetHeight] = useState(8775);
-
-    useEffect(() => {
-        const canvas = document.getElementById('canvas') as HTMLCanvasElement | null;
-        if (canvas) {
-            canvas.width = targetWidth;
-            canvas.height = targetHeight;
-            setCtx(canvas.getContext('2d'));
-            setCanvas(canvas)
-        }
-    }, []);
-
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files ? event.target.files[0] : null;
-        if (file && ctx) {
-            const imageUrl = URL.createObjectURL(file);
-            setImageUrl(imageUrl);
-            setFileName(file.name.replace('.png', ''))
-
-            const img = new Image();
-            const targetPixelWidth = targetWidth;
-            img.width = targetPixelWidth;
-            img.height = targetPixelWidth;
-
-            img.onload = () => {
-                // @ts-ignore
-                ctx.drawImage(img, 0, 0);
-            }
-
-            img.src = imageUrl;
-        }
-    };
-
+const Controls = ({
+    canvasRef,
+    canvasWidth,
+    canvasHeight,
+    setCanvasHeight,
+    setCanvasWidth,
+    tileHeight,
+    tileWidth,
+    setTileHeight,
+    setTileWidth,
+    imageUrl,
+    setImageUrl,
+    fileName,
+    handleFileChange
+}: ControlsProps) => {
     const tile = () => {
-        if (imageUrl && ctx) {
+        if (imageUrl && canvasRef.current) {
             const img = new Image();
-            const targetPixelWidth = desiredImgWidth * desiredDPI;
-            img.width = targetPixelWidth;
-            img.height = targetPixelWidth;
+            img.width = tileWidth;
+            img.height = tileHeight;
 
             img.onload = () => {
-                const numTimesImgFitsHorizontally = Math.ceil(targetWidth / targetPixelWidth);
-                const numTimesImgFitsVertically = Math.ceil(targetHeight / targetPixelWidth);
+                const numTimesImgFitsHorizontally = Math.ceil(canvasWidth / tileWidth);
+                const numTimesImgFitsVertically = Math.ceil(canvasHeight / tileHeight);
                 const tempCanvas = document.createElement('canvas');
                 // @ts-ignore
-                tempCanvas.width = targetPixelWidth * numTimesImgFitsHorizontally;
+                tempCanvas.width = tileWidth * numTimesImgFitsHorizontally;
                 // @ts-ignore
-                tempCanvas.height = targetPixelWidth * numTimesImgFitsVertically;
+                tempCanvas.height = tileHeight * numTimesImgFitsVertically;
                 // @ts-ignore
                 const tempCtx = tempCanvas.getContext('2d');
 
@@ -77,7 +65,11 @@ const Controls = () => {
 
                 // crop tempCanvas according to final needed dimensionss
                 // @ts-ignore
-                ctx.drawImage(tempCanvas, 0, 0, targetWidth, targetHeight, 0, 0, targetWidth, targetHeight);
+                const ctx = canvasRef.current?.getContext('2d');
+                if (ctx) {
+                    ctx.drawImage(tempCanvas, 0, 0, canvasWidth, canvasHeight, 0, 0, canvasWidth, canvasHeight);
+                }
+
             }
 
             img.src = imageUrl;
@@ -85,16 +77,16 @@ const Controls = () => {
     }
 
     const download = () => {
-        if (ctx) {
+        if (canvasRef?.current?.getContext('2d')) {
             // @ts-ignore
-            const canvas = ctx.canvas;
+            const canvas = canvasRef.current;
             const imageDataURL = canvas.toDataURL('image/png'); // Or 'image/jpeg'
 
             // Create a temporary download link
             const downloadLink = document.createElement('a');
             // @ts-ignore
             downloadLink.href = imageDataURL;
-            downloadLink.download = `${fileName}-tiled-${targetWidth}x${targetHeight}.png`; // Name of the file to be downloaded
+            downloadLink.download = `${fileName}-tiled-${canvasWidth}x${canvasHeight}.png`; // Name of the file to be downloaded
 
             // Append the link to the document and trigger a click
             document.body.appendChild(downloadLink);
@@ -124,68 +116,6 @@ const Controls = () => {
             }
         >
             <Box>
-
-                <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
-                    <TextField
-                        value={targetWidth}
-                        variant="standard"
-                        size="small"
-                        sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
-                        }}
-                        type='number'
-                        onChange={(e) => {
-                            if (canvas) {
-                                const targetWidth = parseInt(e.target.value)
-                                canvas.width = targetWidth;
-                                setTargetWidth(targetWidth)
-                            }
-
-                        }}
-                    />
-                    <Box sx={{ fontWeight: 'bold' }}>X</Box>
-                    <TextField
-                        value={targetHeight}
-                        variant="standard"
-                        size="small"
-                        sx={{ padding: theme => theme.spacing(0, 1), width: '90px' }}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
-                        }}
-                        type='number'
-                        onChange={(e) => {
-                            if (canvas) {
-                                const targetHeight = parseInt(e.target.value);
-                                canvas.height = targetHeight;
-                                setTargetHeight(targetHeight);
-                            }
-                        }}
-                    />
-                    <Box sx={{ fontWeight: 'bold' }}>Target Canvas Size (W x H)</Box>
-                </Box>
-
-
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: theme => theme.spacing(0.5),
-                        marginBottom: theme => theme.spacing(2)
-                    }}
-                >
-                    <TextField
-                        value={desiredDPI}
-                        variant="standard"
-                        size="small"
-                        sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
-                        type='number'
-                        onChange={(e) => {
-                            setDesiredDPI(parseInt(e.target.value))
-                        }}
-                    />
-                    <Box sx={{ fontWeight: 'bold' }}>Desired DPI</Box>
-                </Box>
                 <Box sx={{
                     marginBottom: theme => theme.spacing(1)
                 }}>
@@ -199,28 +129,85 @@ const Controls = () => {
                         <ImageInput type="file" onChange={handleFileChange} />
                     </Button>
                 </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: theme => theme.spacing(0.5),
-                        marginBottom: theme => theme.spacing(1)
-                    }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
                     <TextField
-                        value={desiredImgWidth}
+                        value={canvasWidth}
                         variant="standard"
                         size="small"
                         sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
                         InputProps={{
-                            endAdornment: <InputAdornment position="end">inch</InputAdornment>,
+                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
                         }}
                         type='number'
                         onChange={(e) => {
-                            setDesiredImgWidth(parseInt(e.target.value))
+                            if (canvasRef?.current) {
+                                const canvasWidth = parseInt(e.target.value)
+                                canvasRef.current.width = canvasWidth;
+                                setCanvasWidth(canvasWidth)
+                            }
+
                         }}
                     />
-                    <Box sx={{ fontWeight: 'bold' }}>Uploaded image desired side measurement</Box>
+                    <Box sx={{ fontWeight: 'bold' }}>X</Box>
+                    <TextField
+                        value={canvasHeight}
+                        variant="standard"
+                        size="small"
+                        sx={{ padding: theme => theme.spacing(0, 1), width: '90px' }}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
+                        }}
+                        type='number'
+                        onChange={(e) => {
+                            if (canvasRef?.current) {
+                                const canvasHeight = parseInt(e.target.value);
+                                canvasRef.current.height = canvasHeight;
+                                setCanvasHeight(canvasHeight);
+                            }
+                        }}
+                    />
+                    <Box sx={{ fontWeight: 'bold' }}>Canvas Size (W x H)</Box>
                 </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
+                    <TextField
+                        value={tileWidth}
+                        variant="standard"
+                        size="small"
+                        sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
+                        }}
+                        type='number'
+                        onChange={(e) => {
+                            if (canvasRef.current) {
+                                const tileWidth = parseInt(e.target.value)
+                                setTileWidth(tileWidth)
+                            }
+
+                        }}
+                    />
+                    <Box sx={{ fontWeight: 'bold' }}>X</Box>
+                    <TextField
+                        value={tileHeight}
+                        variant="standard"
+                        size="small"
+                        sx={{ padding: theme => theme.spacing(0, 1), width: '90px' }}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
+                        }}
+                        type='number'
+                        onChange={(e) => {
+                            if (canvasRef.current) {
+                                const tileHeight = parseInt(e.target.value);
+                                setTileHeight(tileHeight);
+                            }
+                        }}
+                    />
+                    <Box sx={{ fontWeight: 'bold' }}>Tile Size (W x H)</Box>
+                </Box>
+
+
+
                 <Box sx={{
                     marginBottom: theme => theme.spacing(1)
                 }}>
