@@ -5,6 +5,14 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ImageInput from './ImageInput';
+import { Theme } from '@mui/material/styles';
+
+const controlStyles = {
+    display: 'flex',
+    alignItems: 'center',
+    padding: (theme: Theme) => theme.spacing(0.5),
+    marginBottom: (theme: Theme) => theme.spacing(1)
+}
 
 interface ControlsProps {
     canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -97,6 +105,8 @@ const Controls = ({
         }
     }
 
+
+
     return (
         <Box
             sx={
@@ -115,6 +125,7 @@ const Controls = ({
                 )
             }
         >
+
             <Box>
                 <Box sx={{
                     marginBottom: theme => theme.spacing(1)
@@ -129,7 +140,7 @@ const Controls = ({
                         <ImageInput type="file" onChange={handleFileChange} />
                     </Button>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
+                <Box sx={controlStyles}>
                     <TextField
                         value={canvasWidth}
                         variant="standard"
@@ -168,7 +179,7 @@ const Controls = ({
                     />
                     <Box sx={{ fontWeight: 'bold' }}>Canvas Size (W x H)</Box>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', padding: theme => theme.spacing(0.5), }}>
+                <Box sx={controlStyles}>
                     <TextField
                         value={tileWidth}
                         variant="standard"
@@ -207,17 +218,17 @@ const Controls = ({
                 </Box>
 
 
+                <Box sx={controlStyles}>
+                    <Box sx={{
+                        marginRight: theme => theme.spacing(1)
+                    }}>
+                        <Button variant="outlined" onClick={tile}>Tile</Button>
+                    </Box>
+                    <Box>
+                        <Button variant="contained" onClick={download} disableElevation>Download</Button>
+                    </Box>
+                </Box>
 
-                <Box sx={{
-                    marginBottom: theme => theme.spacing(1)
-                }}>
-                    <Button onClick={tile}>Tile</Button>
-                </Box>
-                <Box sx={{
-                    marginBottom: theme => theme.spacing(1)
-                }}>
-                    <Button onClick={download}>Download</Button>
-                </Box>
             </Box>
         </Box >
 
