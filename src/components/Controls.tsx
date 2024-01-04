@@ -6,6 +6,8 @@ import TextField from '@mui/material/TextField';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ImageInput from './ImageInput';
 import { Theme } from '@mui/material/styles';
+import ReplayIcon from '@mui/icons-material/Replay';
+import { IconButton } from '@mui/material';
 
 const controlStyles = {
     display: 'flex',
@@ -24,6 +26,10 @@ interface ControlsProps {
     tileWidth: number;
     setTileHeight: (height: number) => void;
     setTileWidth: (width: number) => void;
+    originalTileHeight: number;
+    originalTileWidth: number;
+    setOriginalTileHeight: (height: number) => void;
+    setOriginalTileWidth: (width: number) => void;
     imageUrl: string | null;
     setImageUrl: (imageUrl: string) => void;
     fileName: string;
@@ -40,6 +46,10 @@ const Controls = ({
     tileWidth,
     setTileHeight,
     setTileWidth,
+    originalTileHeight,
+    originalTileWidth,
+    setOriginalTileHeight,
+    setOriginalTileWidth,
     imageUrl,
     setImageUrl,
     fileName,
@@ -117,7 +127,6 @@ const Controls = ({
                         justifyContent: 'center',
                         flexDirection: 'column',
                         width: '50%',
-                        backgroundColor: '#bababa',
                         [theme.breakpoints.down('sm')]: {
                             width: '100%',
                         }
@@ -136,87 +145,100 @@ const Controls = ({
                         startIcon={<CloudUploadIcon />}
 
                     >
-                        Upload image tile
+                        Upload tile
                         <ImageInput type="file" onChange={handleFileChange} />
                     </Button>
                 </Box>
-                <Box sx={controlStyles}>
-                    <TextField
-                        value={canvasWidth}
-                        variant="standard"
-                        size="small"
-                        sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
-                        }}
-                        type='number'
-                        onChange={(e) => {
-                            if (canvasRef?.current) {
-                                const canvasWidth = parseInt(e.target.value)
-                                canvasRef.current.width = canvasWidth;
-                                setCanvasWidth(canvasWidth)
-                            }
 
-                        }}
-                    />
-                    <Box sx={{ fontWeight: 'bold' }}>X</Box>
-                    <TextField
-                        value={canvasHeight}
-                        variant="standard"
-                        size="small"
-                        sx={{ padding: theme => theme.spacing(0, 1), width: '90px' }}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
-                        }}
-                        type='number'
-                        onChange={(e) => {
-                            if (canvasRef?.current) {
-                                const canvasHeight = parseInt(e.target.value);
-                                canvasRef.current.height = canvasHeight;
-                                setCanvasHeight(canvasHeight);
+                <Box sx={{ margin: theme => theme.spacing(6, 0) }}>
+                    <Box sx={controlStyles}>
+                        <TextField
+                            value={canvasWidth}
+                            variant="standard"
+                            size="small"
+                            sx={{ paddingRight: theme => theme.spacing(1), width: '160px' }}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">px (width)</InputAdornment>,
+                            }}
+                            type='number'
+                            onChange={(e) => {
+                                if (canvasRef?.current) {
+                                    const canvasWidth = parseInt(e.target.value)
+                                    canvasRef.current.width = canvasWidth;
+                                    setCanvasWidth(canvasWidth)
+                                }
+
+                            }}
+                        />
+                        <Box sx={{ fontWeight: 'bold' }}>X</Box>
+                        <TextField
+                            value={canvasHeight}
+                            variant="standard"
+                            size="small"
+                            sx={{ padding: theme => theme.spacing(0, 1), width: '160px' }}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">px (height)</InputAdornment>,
+                            }}
+                            type='number'
+                            onChange={(e) => {
+                                if (canvasRef?.current) {
+                                    const canvasHeight = parseInt(e.target.value);
+                                    canvasRef.current.height = canvasHeight;
+                                    setCanvasHeight(canvasHeight);
+                                }
+                            }}
+                        />
+                        <Box sx={{ fontWeight: 'bold' }}>Canvas Size</Box>
+                    </Box>
+                    <Box sx={controlStyles}>
+                        <TextField
+                            value={tileWidth}
+                            variant="standard"
+                            size="small"
+                            sx={{ paddingRight: theme => theme.spacing(1), width: '160px' }}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">px (width)</InputAdornment>,
+                            }}
+                            type='number'
+                            onChange={(e) => {
+                                if (canvasRef.current) {
+                                    const tileWidth = parseInt(e.target.value)
+                                    setTileWidth(tileWidth)
+                                }
+
+                            }}
+                        />
+                        <Box sx={{ fontWeight: 'bold' }}>X</Box>
+                        <TextField
+                            value={tileHeight}
+                            variant="standard"
+                            size="small"
+                            sx={{ padding: theme => theme.spacing(0, 1), width: '160px' }}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">px (height)</InputAdornment>,
+                            }}
+                            type='number'
+                            onChange={(e) => {
+                                if (canvasRef.current) {
+                                    const tileHeight = parseInt(e.target.value);
+                                    setTileHeight(tileHeight);
+                                }
+                            }}
+                        />
+                        <Box sx={{ fontWeight: 'bold' }}>Tile Size</Box>
+                        <IconButton
+                            onClick={
+                                () => {
+                                    setTileHeight(originalTileHeight);
+                                    setTileWidth(originalTileWidth)
+                                }
                             }
-                        }}
-                    />
-                    <Box sx={{ fontWeight: 'bold' }}>Canvas Size (W x H)</Box>
+                            disabled={!originalTileHeight || !originalTileWidth}
+                        >
+                            <ReplayIcon />
+                        </IconButton>
+                    </Box>
                 </Box>
-                <Box sx={controlStyles}>
-                    <TextField
-                        value={tileWidth}
-                        variant="standard"
-                        size="small"
-                        sx={{ paddingRight: theme => theme.spacing(1), width: '90px' }}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
-                        }}
-                        type='number'
-                        onChange={(e) => {
-                            if (canvasRef.current) {
-                                const tileWidth = parseInt(e.target.value)
-                                setTileWidth(tileWidth)
-                            }
-
-                        }}
-                    />
-                    <Box sx={{ fontWeight: 'bold' }}>X</Box>
-                    <TextField
-                        value={tileHeight}
-                        variant="standard"
-                        size="small"
-                        sx={{ padding: theme => theme.spacing(0, 1), width: '90px' }}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">px</InputAdornment>,
-                        }}
-                        type='number'
-                        onChange={(e) => {
-                            if (canvasRef.current) {
-                                const tileHeight = parseInt(e.target.value);
-                                setTileHeight(tileHeight);
-                            }
-                        }}
-                    />
-                    <Box sx={{ fontWeight: 'bold' }}>Tile Size (W x H)</Box>
-                </Box>
-
 
                 <Box sx={controlStyles}>
                     <Box sx={{

@@ -43,8 +43,7 @@ const Canvas = ({ canvasRef, tileHeight, tileWidth, image, canvasWidth, canvasHe
                         alignItems: 'center',
                         justifyContent: 'center',
                         width: '50%',
-                        backgroundColor: '#bababa',
-                        padding: theme.spacing(1),
+                        padding: theme.spacing(3.5),
                         [theme.breakpoints.down('sm')]: {
                             width: '100%',
                         }
