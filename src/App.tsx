@@ -42,11 +42,6 @@ const App = () => {
   };
 
 
-  const resetTileDimensions = () => {
-    setTileHeight(originalTileHeight);
-    setTileWidth(originalTileWidth)
-  }
-
   return (
     <ThemeProvider theme={theme}>
       <Layout>

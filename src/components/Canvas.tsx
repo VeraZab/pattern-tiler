@@ -1,6 +1,6 @@
 
 import Box from '@mui/material/Box';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface CanvasProps {
     canvasHeight: number;
@@ -19,7 +19,7 @@ const Canvas = ({ canvasRef, tileHeight, tileWidth, image, canvasWidth, canvasHe
             canvasRef.current.height = canvasHeight;
         }
 
-    }, []);
+    }, [canvasHeight, canvasWidth, canvasRef]);
 
     useEffect(() => {
         if (image && canvasRef.current) {

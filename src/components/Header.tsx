@@ -15,7 +15,7 @@ const Header = () => {
         }}>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <img src="pattern-tiler-logo.png" style={{ width: '50px', paddingRight: '15px' }} />
+                <img alt="pattern-tiler logo" src="pattern-tiler-logo.png" style={{ width: '50px', paddingRight: '15px' }} />
                 <Box
                     sx={theme => ({
                         fontSize: '30px',
