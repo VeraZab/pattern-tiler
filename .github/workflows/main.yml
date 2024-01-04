@@ -14,18 +14,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-    - name: Clear npm cache
-      run: npm cache clean --force
-
-    - name: Delete node_modules and package-lock.json
-      run: rm -rf node_modules package-lock.json
-
-    - name: Set npm registry
-      run: npm config set registry https://registry.npmjs.org/
-
-    - name: Update npm
-      run: npm install -g npm@latest
-
     - name: Install dependencies
       run: npm install
       env:
