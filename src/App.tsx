@@ -1,13 +1,14 @@
 import { ThemeProvider } from '@emotion/react';
 import Box from '@mui/material/Box';
 import { ChangeEvent, useRef, useState } from 'react';
+
 import Canvas from './components/Canvas';
 import Controls from './components/Controls';
 import Layout from './components/Layout';
 import { theme } from './theme';
 
 
-const App = () => {
+const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvasWidth, setCanvasWidth] = useState(6000);
   const [canvasHeight, setCanvasHeight] = useState(6000);

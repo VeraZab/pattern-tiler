@@ -10,7 +10,7 @@ interface CanvasProps {
     canvasRef: React.RefObject<HTMLCanvasElement>;
 }
 
-const Canvas = ({ canvasRef, tileHeight, tileWidth, image, canvasWidth, canvasHeight }: CanvasProps) => {
+const Canvas: React.FC<CanvasProps> = ({ canvasRef, tileHeight, tileWidth, image, canvasWidth, canvasHeight }) => {
     useEffect(() => {
         const canvas = canvasRef.current;
         if (canvas) {

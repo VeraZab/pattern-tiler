@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 To run the app:
 1. `npm install`
-2. `npm run start`
+2. `PUBLIC_URL=/ npm run start`
 
 To see the deployed app:
 https://verazab.github.io/pattern-tiler/

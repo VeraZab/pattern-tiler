@@ -1,9 +1,15 @@
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 import React from 'react';
+
 import Footer from './Footer';
 import Header from './Header';
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+// Define the props for the Layout component
+interface LayoutProps {
+    children?: React.ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <Box
             className="container"

@@ -1,11 +1,9 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { IconButton, InputAdornment } from '@mui/material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { Box, Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import { ChangeEvent } from 'react';
+
 import ImageInput from './ImageInput';
 
 const controlStyles = {
@@ -27,14 +25,13 @@ interface ControlsProps {
     setTileWidth: (width: number) => void;
     originalTileHeight: number;
     originalTileWidth: number;
-
     imageUrl: string | null;
     setImageUrl: (imageUrl: string) => void;
     fileName: string;
     handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Controls = ({
+const Controls: React.FC<ControlsProps> = ({
     canvasRef,
     canvasWidth,
     canvasHeight,
@@ -49,7 +46,7 @@ const Controls = ({
     imageUrl,
     fileName,
     handleFileChange
-}: ControlsProps) => {
+}) => {
     const tile = () => {
         if (imageUrl && canvasRef.current) {
             const img = new Image();
@@ -60,27 +57,27 @@ const Controls = ({
                 const numTimesImgFitsHorizontally = Math.ceil(canvasWidth / tileWidth);
                 const numTimesImgFitsVertically = Math.ceil(canvasHeight / tileHeight);
                 const tempCanvas = document.createElement('canvas');
-                // @ts-ignore
-                tempCanvas.width = tileWidth * numTimesImgFitsHorizontally;
-                // @ts-ignore
-                tempCanvas.height = tileHeight * numTimesImgFitsVertically;
-                // @ts-ignore
-                const tempCtx = tempCanvas.getContext('2d');
 
-                if (tempCtx) {
-                    for (let x = 0; x < numTimesImgFitsHorizontally; x++) {
-                        for (let y = 0; y < numTimesImgFitsVertically; y++) {
-                            // @ts-ignore
-                            tempCtx.drawImage(img, x * img.width, y * img.height, img.width, img.height);
+                if (tempCanvas) {
+                    tempCanvas.width = tileWidth * numTimesImgFitsHorizontally;
+                    tempCanvas.height = tileHeight * numTimesImgFitsVertically;
+                    const tempCtx = tempCanvas.getContext('2d');
+
+                    if (tempCtx) {
+                        for (let x = 0; x < numTimesImgFitsHorizontally; x++) {
+                            for (let y = 0; y < numTimesImgFitsVertically; y++) {
+                                tempCtx.drawImage(img, x * img.width, y * img.height, img.width, img.height);
+                            }
                         }
                     }
                 }
 
                 // crop tempCanvas according to final needed dimensionss
-                // @ts-ignore
-                const ctx = canvasRef.current?.getContext('2d');
-                if (ctx) {
-                    ctx.drawImage(tempCanvas, 0, 0, canvasWidth, canvasHeight, 0, 0, canvasWidth, canvasHeight);
+                if (canvasRef && canvasRef.current) {
+                    const ctx = canvasRef.current.getContext('2d');
+                    if (ctx) {
+                        ctx.drawImage(tempCanvas, 0, 0, canvasWidth, canvasHeight, 0, 0, canvasWidth, canvasHeight);
+                    }
                 }
 
             }
@@ -90,16 +87,17 @@ const Controls = ({
     }
 
     const download = () => {
-        if (canvasRef?.current?.getContext('2d')) {
-            // @ts-ignore
+        if (canvasRef && canvasRef.current) {
             const canvas = canvasRef.current;
             const imageDataURL = canvas.toDataURL('image/png'); // Or 'image/jpeg'
 
             // Create a temporary download link
             const downloadLink = document.createElement('a');
-            // @ts-ignore
-            downloadLink.href = imageDataURL;
-            downloadLink.download = `${fileName}-tiled-${canvasWidth}x${canvasHeight}.png`; // Name of the file to be downloaded
+            if (downloadLink) {
+                downloadLink.href = imageDataURL;
+                downloadLink.download = `${fileName}-tiled-${canvasWidth}x${canvasHeight}.png`; // Name of the file to be downloaded
+            }
+
 
             // Append the link to the document and trigger a click
             document.body.appendChild(downloadLink);
@@ -109,8 +107,6 @@ const Controls = ({
             document.body.removeChild(downloadLink);
         }
     }
-
-
 
     return (
         <Box
