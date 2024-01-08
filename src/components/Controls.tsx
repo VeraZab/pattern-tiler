@@ -1,13 +1,12 @@
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { InputAdornment } from '@mui/material';
+import ReplayIcon from '@mui/icons-material/Replay';
+import { IconButton, InputAdornment } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { Theme } from '@mui/material/styles';
 import { ChangeEvent } from 'react';
 import ImageInput from './ImageInput';
-import { Theme } from '@mui/material/styles';
-import ReplayIcon from '@mui/icons-material/Replay';
-import { IconButton } from '@mui/material';
 
 const controlStyles = {
     display: 'flex',
@@ -28,8 +27,7 @@ interface ControlsProps {
     setTileWidth: (width: number) => void;
     originalTileHeight: number;
     originalTileWidth: number;
-    setOriginalTileHeight: (height: number) => void;
-    setOriginalTileWidth: (width: number) => void;
+
     imageUrl: string | null;
     setImageUrl: (imageUrl: string) => void;
     fileName: string;
@@ -48,10 +46,7 @@ const Controls = ({
     setTileWidth,
     originalTileHeight,
     originalTileWidth,
-    setOriginalTileHeight,
-    setOriginalTileWidth,
     imageUrl,
-    setImageUrl,
     fileName,
     handleFileChange
 }: ControlsProps) => {

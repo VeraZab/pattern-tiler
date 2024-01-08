@@ -1,6 +1,6 @@
+import HelpIcon from '@mui/icons-material/Help';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-import HelpIcon from '@mui/icons-material/Help';
 
 const Header = () => {
     const aboutTilemaker = 'This is a simple patternmaking tool that allows you to use a tileable image ' +

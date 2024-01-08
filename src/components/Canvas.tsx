@@ -1,4 +1,3 @@
-
 import Box from '@mui/material/Box';
 import { useEffect } from 'react';
 
@@ -25,8 +24,6 @@ const Canvas = ({ canvasRef, tileHeight, tileWidth, image, canvasWidth, canvasHe
         if (image && canvasRef.current) {
             const ctx = canvasRef.current.getContext('2d');
             if (ctx) {
-                canvasRef.current.width = canvasWidth;
-                canvasRef.current.height = canvasHeight;
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
                 ctx.drawImage(image, 0, 0, tileWidth, tileHeight);
             }

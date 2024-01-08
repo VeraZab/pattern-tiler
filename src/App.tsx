@@ -85,9 +85,7 @@ const App = () => {
             imageUrl={imageUrl}
             setImageUrl={setImageUrl}
             originalTileHeight={originalTileHeight}
-            setOriginalTileHeight={setOriginalTileHeight}
             originalTileWidth={originalTileWidth}
-            setOriginalTileWidth={setOriginalTileWidth}
           />
         </Box>
       </Layout>
