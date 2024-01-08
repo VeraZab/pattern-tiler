@@ -4,7 +4,7 @@ import { Box, Button, IconButton, InputAdornment, TextField } from '@mui/materia
 import { Theme } from '@mui/material/styles';
 import { ChangeEvent } from 'react';
 
-import { CanvasDimensions } from '../App';
+import { CanvasDimensions, TileDimensions } from '../App';
 import ImageInput from './ImageInput';
 
 const controlStyles = {
@@ -18,12 +18,8 @@ interface ControlsProps {
     canvasRef: React.RefObject<HTMLCanvasElement>;
     canvasState: CanvasDimensions;
     setCanvasState: React.Dispatch<React.SetStateAction<CanvasDimensions>>;
-    tileHeight: number;
-    tileWidth: number;
-    setTileHeight: (height: number) => void;
-    setTileWidth: (width: number) => void;
-    originalTileHeight: number;
-    originalTileWidth: number;
+    tileState: TileDimensions;
+    setTileState: React.Dispatch<React.SetStateAction<TileDimensions>>;
     imageUrl: string | null;
     setImageUrl: (imageUrl: string) => void;
     fileName: string;
@@ -34,12 +30,8 @@ const Controls: React.FC<ControlsProps> = ({
     canvasRef,
     canvasState,
     setCanvasState,
-    tileHeight,
-    tileWidth,
-    setTileHeight,
-    setTileWidth,
-    originalTileHeight,
-    originalTileWidth,
+    tileState,
+    setTileState,
     imageUrl,
     fileName,
     handleFileChange
@@ -47,17 +39,17 @@ const Controls: React.FC<ControlsProps> = ({
     const tile = () => {
         if (imageUrl && canvasRef.current) {
             const img = new Image();
-            img.width = tileWidth;
-            img.height = tileHeight;
+            img.width = tileState.width;
+            img.height = tileState.height;
 
             img.onload = () => {
-                const numTimesImgFitsHorizontally = Math.ceil(canvasState.width / tileWidth);
-                const numTimesImgFitsVertically = Math.ceil(canvasState.height / tileHeight);
+                const numTimesImgFitsHorizontally = Math.ceil(canvasState.width / tileState.width);
+                const numTimesImgFitsVertically = Math.ceil(canvasState.height / tileState.height);
                 const tempCanvas = document.createElement('canvas');
 
                 if (tempCanvas) {
-                    tempCanvas.width = tileWidth * numTimesImgFitsHorizontally;
-                    tempCanvas.height = tileHeight * numTimesImgFitsVertically;
+                    tempCanvas.width = tileState.width * numTimesImgFitsHorizontally;
+                    tempCanvas.height = tileState.height * numTimesImgFitsVertically;
                     const tempCtx = tempCanvas.getContext('2d');
 
                     if (tempCtx) {
@@ -180,7 +172,7 @@ const Controls: React.FC<ControlsProps> = ({
                     </Box>
                     <Box sx={controlStyles}>
                         <TextField
-                            value={tileWidth}
+                            value={tileState.width}
                             variant="standard"
                             size="small"
                             sx={{ paddingRight: theme => theme.spacing(1), width: '160px' }}
@@ -191,14 +183,14 @@ const Controls: React.FC<ControlsProps> = ({
                             onChange={(e) => {
                                 if (canvasRef.current) {
                                     const tileWidth = parseInt(e.target.value)
-                                    setTileWidth(tileWidth)
+                                    setTileState(prev => ({ ...prev, width: tileWidth }))
                                 }
 
                             }}
                         />
                         <Box sx={{ fontWeight: 'bold' }}>X</Box>
                         <TextField
-                            value={tileHeight}
+                            value={tileState.height}
                             variant="standard"
                             size="small"
                             sx={{ padding: theme => theme.spacing(0, 1), width: '160px' }}
@@ -209,7 +201,7 @@ const Controls: React.FC<ControlsProps> = ({
                             onChange={(e) => {
                                 if (canvasRef.current) {
                                     const tileHeight = parseInt(e.target.value);
-                                    setTileHeight(tileHeight);
+                                    setTileState(prev => ({ ...prev, height: tileHeight }));
                                 }
                             }}
                         />
@@ -217,11 +209,10 @@ const Controls: React.FC<ControlsProps> = ({
                         <IconButton
                             onClick={
                                 () => {
-                                    setTileHeight(originalTileHeight);
-                                    setTileWidth(originalTileWidth)
+                                    setTileState(prev => ({ ...prev, width: tileState.originalWidth, height: tileState.originalHeight }));
                                 }
                             }
-                            disabled={!originalTileHeight || !originalTileWidth}
+                            disabled={!tileState.originalHeight || !tileState.originalWidth}
                         >
                             <ReplayIcon />
                         </IconButton>

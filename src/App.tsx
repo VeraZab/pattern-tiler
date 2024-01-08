@@ -12,6 +12,13 @@ export interface CanvasDimensions {
   height: number,
 }
 
+export interface TileDimensions {
+  originalWidth: number,
+  originalHeight: number,
+  width: number,
+  height: number,
+}
+
 
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -20,11 +27,13 @@ const App: React.FC = () => {
     height: 6000,
   });
 
+  const [tileState, setTileState] = useState<TileDimensions>({
+    originalHeight: 0,
+    originalWidth: 0,
+    width: 0,
+    height: 0
+  });
 
-  const [originalTileHeight, setOriginalTileHeight] = useState(0);
-  const [originalTileWidth, setOriginalTileWidth] = useState(0);
-  const [tileHeight, setTileHeight] = useState(0);
-  const [tileWidth, setTileWidth] = useState(0);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>('');
   const [image, setImage] = useState<HTMLImageElement | null>(null);
@@ -40,10 +49,13 @@ const App: React.FC = () => {
       const img = new Image();
 
       img.onload = () => {
-        setOriginalTileHeight(img.naturalHeight);
-        setOriginalTileWidth(img.naturalWidth);
-        setTileHeight(img.naturalHeight);
-        setTileWidth(img.naturalWidth);
+        setTileState({
+          originalHeight: img.naturalHeight,
+          originalWidth: img.naturalWidth,
+          height: img.naturalHeight,
+          width: img.naturalWidth
+        })
+
         setImage(img);
       }
 
@@ -75,24 +87,19 @@ const App: React.FC = () => {
           <Canvas
             canvasRef={canvasRef}
             canvasState={canvasState}
-            tileHeight={tileHeight}
-            tileWidth={tileWidth}
+            tileState={tileState}
             image={image}
           />
           <Controls
             canvasRef={canvasRef}
             canvasState={canvasState}
             setCanvasState={setCanvasState}
+            tileState={tileState}
+            setTileState={setTileState}
             fileName={fileName}
-            setTileHeight={setTileHeight}
-            setTileWidth={setTileWidth}
-            tileHeight={tileHeight}
-            tileWidth={tileWidth}
             handleFileChange={handleFileChange}
             imageUrl={imageUrl}
             setImageUrl={setImageUrl}
-            originalTileHeight={originalTileHeight}
-            originalTileWidth={originalTileWidth}
           />
         </Box>
       </Layout>

@@ -1,17 +1,16 @@
 import Box from '@mui/material/Box';
 import { useEffect } from 'react';
 
-import { CanvasDimensions } from '../App';
+import { CanvasDimensions, TileDimensions } from '../App';
 
 interface CanvasProps {
     canvasState: CanvasDimensions;
-    tileHeight: number;
-    tileWidth: number;
+    tileState: TileDimensions;
     image: HTMLImageElement | null;
     canvasRef: React.RefObject<HTMLCanvasElement>;
 }
 
-const Canvas: React.FC<CanvasProps> = ({ canvasRef, tileHeight, tileWidth, image, canvasState }) => {
+const Canvas: React.FC<CanvasProps> = ({ canvasRef, tileState, image, canvasState }) => {
     useEffect(() => {
         const canvas = canvasRef.current;
         if (canvas) {
@@ -26,11 +25,11 @@ const Canvas: React.FC<CanvasProps> = ({ canvasRef, tileHeight, tileWidth, image
             const ctx = canvasRef.current.getContext('2d');
             if (ctx) {
                 ctx.clearRect(0, 0, canvasState.width, canvasState.height);
-                ctx.drawImage(image, 0, 0, tileWidth, tileHeight);
+                ctx.drawImage(image, 0, 0, tileState.width, tileState.height);
             }
         }
 
-    }, [image, canvasRef, tileHeight, tileWidth, canvasState])
+    }, [image, canvasRef, tileState, canvasState])
 
     return (
         <Box
