@@ -1,7 +1,26 @@
+import { Theme } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
 
 import { CanvasDimensions, ImageAttributes, TileDimensions } from "../App";
+
+const canvasContainerStyles = (theme: Theme) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "50%",
+  padding: theme.spacing(3.5),
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
+});
+
+const canvasStyles: CSSProperties = {
+  maxWidth: "100%",
+  maxHeight: "100%",
+  objectFit: "contain",
+  border: "1px solid grey",
+}
 
 interface CanvasProps {
   canvasState: CanvasDimensions;
@@ -31,26 +50,12 @@ const Canvas: React.FC<CanvasProps> = ({ canvasRef, tileState, imageState, canva
 
   return (
     <Box
-      sx={(theme) => ({
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "50%",
-        padding: theme.spacing(3.5),
-        [theme.breakpoints.down("sm")]: {
-          width: "100%",
-        },
-      })}
+      sx={canvasContainerStyles}
     >
       <canvas
         ref={canvasRef}
         id="canvas"
-        style={{
-          maxWidth: "100%",
-          maxHeight: "100%",
-          objectFit: "contain",
-          border: "1px solid grey",
-        }}
+        style={canvasStyles}
       />
     </Box>
   );

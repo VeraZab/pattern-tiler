@@ -1,5 +1,21 @@
 import HelpIcon from "@mui/icons-material/Help";
-import { Box, Tooltip } from "@mui/material";
+import { Box, Theme, Tooltip } from "@mui/material";
+
+const headerContainerStyles = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+}
+
+const leftHandSideContainerStyles = { display: "flex", alignItems: "center" }
+
+const logoStyles = { width: "50px", paddingRight: "15px" }
+
+const appTitleStyles = (theme: Theme) => ({
+  fontSize: "30px",
+  fontWeight: "bold",
+  fontFamily: "monospace",
+})
 
 const Header: React.FC = () => {
   const aboutTilemaker =
@@ -9,24 +25,16 @@ const Header: React.FC = () => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
+      sx={headerContainerStyles}
     >
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={leftHandSideContainerStyles}>
         <img
           alt="pattern-tiler logo"
           src="pattern-tiler-logo.png"
-          style={{ width: "50px", paddingRight: "15px" }}
+          style={logoStyles}
         />
         <Box
-          sx={(theme) => ({
-            fontSize: "30px",
-            fontWeight: "bold",
-            fontFamily: "monospace",
-          })}
+          sx={appTitleStyles}
         >
           Pattern Tiler
         </Box>

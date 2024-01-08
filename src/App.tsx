@@ -6,6 +6,18 @@ import Canvas from "./components/Canvas";
 import Controls from "./components/Controls";
 import Layout from "./components/Layout";
 import { theme } from "./theme";
+import { Theme } from "@mui/material";
+
+export const layoutStyles = (theme: Theme) => ({
+  display: "flex",
+  flex: 1,
+  overflowY: "auto",
+  backgroundColor: "#e3e1e1",
+  margin: `${theme.spacing(2)} 0`,
+  [theme.breakpoints.down("sm")]: {
+    flexDirection: "column-reverse",
+  },
+});
 
 export interface CanvasDimensions {
   width: number;
@@ -24,6 +36,7 @@ export interface ImageAttributes {
   fileName: string | null;
   image: HTMLImageElement | null;
 }
+
 
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -76,16 +89,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <Layout>
         <Box
-          sx={(theme) => ({
-            display: "flex",
-            flex: 1,
-            overflowY: "auto",
-            backgroundColor: "#e3e1e1",
-            margin: `${theme.spacing(2)} 0`,
-            [theme.breakpoints.down("sm")]: {
-              flexDirection: "column-reverse",
-            },
-          })}
+          sx={layoutStyles}
         >
           <Canvas
             canvasRef={canvasRef}

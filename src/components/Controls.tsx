@@ -7,12 +7,49 @@ import { ChangeEvent } from "react";
 import { CanvasDimensions, ImageAttributes, TileDimensions } from "../App";
 import ImageInput from "./ImageInput";
 
+const controlsContainerStyles = (theme: Theme) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "column",
+  width: "50%",
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+  },
+});
+
 const controlStyles = {
   display: "flex",
   alignItems: "center",
   padding: (theme: Theme) => theme.spacing(0.5),
   marginBottom: (theme: Theme) => theme.spacing(1),
 };
+
+const uploadContainerStyles = {
+  marginBottom: (theme: Theme) => theme.spacing(1),
+}
+
+const canvasWidthStyles = {
+  paddingRight: (theme: Theme) => theme.spacing(1),
+  width: "160px",
+}
+
+const canvasHeightStyles = {
+  padding: (theme: Theme) => theme.spacing(0, 1),
+  width: "160px",
+}
+
+const tileContainerStyles = {
+  marginRight: (theme: Theme) => theme.spacing(1),
+}
+
+const controlsTextStyles = {
+  fontWeight: 'bold'
+}
+
+const mainControlsContainer = {
+  margin: (theme: Theme) => theme.spacing(6, 0)
+}
 
 interface ControlsProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -104,22 +141,11 @@ const Controls: React.FC<ControlsProps> = ({
 
   return (
     <Box
-      sx={(theme) => ({
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        width: "50%",
-        [theme.breakpoints.down("sm")]: {
-          width: "100%",
-        },
-      })}
+      sx={controlsContainerStyles}
     >
       <Box>
         <Box
-          sx={{
-            marginBottom: (theme) => theme.spacing(1),
-          }}
+          sx={uploadContainerStyles}
         >
           <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
             Upload tile
@@ -127,16 +153,13 @@ const Controls: React.FC<ControlsProps> = ({
           </Button>
         </Box>
 
-        <Box sx={{ margin: (theme) => theme.spacing(6, 0) }}>
+        <Box sx={mainControlsContainer}>
           <Box sx={controlStyles}>
             <TextField
               value={canvasState.width}
               variant="standard"
               size="small"
-              sx={{
-                paddingRight: (theme) => theme.spacing(1),
-                width: "160px",
-              }}
+              sx={canvasWidthStyles}
               InputProps={{
                 endAdornment: <InputAdornment position="end">px (width)</InputAdornment>,
               }}
@@ -152,15 +175,12 @@ const Controls: React.FC<ControlsProps> = ({
                 }
               }}
             />
-            <Box sx={{ fontWeight: "bold" }}>X</Box>
+            <Box sx={controlsTextStyles}>X</Box>
             <TextField
               value={canvasState.height}
               variant="standard"
               size="small"
-              sx={{
-                padding: (theme) => theme.spacing(0, 1),
-                width: "160px",
-              }}
+              sx={canvasHeightStyles}
               InputProps={{
                 endAdornment: <InputAdornment position="end">px (height)</InputAdornment>,
               }}
@@ -176,17 +196,14 @@ const Controls: React.FC<ControlsProps> = ({
                 }
               }}
             />
-            <Box sx={{ fontWeight: "bold" }}>Canvas Size</Box>
+            <Box sx={controlsTextStyles}>Canvas Size</Box>
           </Box>
           <Box sx={controlStyles}>
             <TextField
               value={tileState.width}
               variant="standard"
               size="small"
-              sx={{
-                paddingRight: (theme) => theme.spacing(1),
-                width: "160px",
-              }}
+              sx={canvasWidthStyles}
               InputProps={{
                 endAdornment: <InputAdornment position="end">px (width)</InputAdornment>,
               }}
@@ -201,15 +218,12 @@ const Controls: React.FC<ControlsProps> = ({
                 }
               }}
             />
-            <Box sx={{ fontWeight: "bold" }}>X</Box>
+            <Box sx={controlsTextStyles}>X</Box>
             <TextField
               value={tileState.height}
               variant="standard"
               size="small"
-              sx={{
-                padding: (theme) => theme.spacing(0, 1),
-                width: "160px",
-              }}
+              sx={canvasHeightStyles}
               InputProps={{
                 endAdornment: <InputAdornment position="end">px (height)</InputAdornment>,
               }}
@@ -224,7 +238,7 @@ const Controls: React.FC<ControlsProps> = ({
                 }
               }}
             />
-            <Box sx={{ fontWeight: "bold" }}>Tile Size</Box>
+            <Box sx={controlsTextStyles}>Tile Size</Box>
             <IconButton
               onClick={() => {
                 setTileState((prev) => ({
@@ -242,9 +256,7 @@ const Controls: React.FC<ControlsProps> = ({
 
         <Box sx={controlStyles}>
           <Box
-            sx={{
-              marginRight: (theme) => theme.spacing(1),
-            }}
+            sx={tileContainerStyles}
           >
             <Button variant="outlined" onClick={tile}>
               Tile
