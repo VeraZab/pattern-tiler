@@ -4,6 +4,7 @@ import { Box, Button, IconButton, InputAdornment, TextField } from '@mui/materia
 import { Theme } from '@mui/material/styles';
 import { ChangeEvent } from 'react';
 
+import { CanvasDimensions } from '../App';
 import ImageInput from './ImageInput';
 
 const controlStyles = {
@@ -15,10 +16,8 @@ const controlStyles = {
 
 interface ControlsProps {
     canvasRef: React.RefObject<HTMLCanvasElement>;
-    canvasWidth: number;
-    canvasHeight: number;
-    setCanvasHeight: (height: number) => void;
-    setCanvasWidth: (width: number) => void;
+    canvasState: CanvasDimensions;
+    setCanvasState: React.Dispatch<React.SetStateAction<CanvasDimensions>>;
     tileHeight: number;
     tileWidth: number;
     setTileHeight: (height: number) => void;
@@ -33,10 +32,8 @@ interface ControlsProps {
 
 const Controls: React.FC<ControlsProps> = ({
     canvasRef,
-    canvasWidth,
-    canvasHeight,
-    setCanvasHeight,
-    setCanvasWidth,
+    canvasState,
+    setCanvasState,
     tileHeight,
     tileWidth,
     setTileHeight,
@@ -54,8 +51,8 @@ const Controls: React.FC<ControlsProps> = ({
             img.height = tileHeight;
 
             img.onload = () => {
-                const numTimesImgFitsHorizontally = Math.ceil(canvasWidth / tileWidth);
-                const numTimesImgFitsVertically = Math.ceil(canvasHeight / tileHeight);
+                const numTimesImgFitsHorizontally = Math.ceil(canvasState.width / tileWidth);
+                const numTimesImgFitsVertically = Math.ceil(canvasState.height / tileHeight);
                 const tempCanvas = document.createElement('canvas');
 
                 if (tempCanvas) {
@@ -76,7 +73,7 @@ const Controls: React.FC<ControlsProps> = ({
                 if (canvasRef && canvasRef.current) {
                     const ctx = canvasRef.current.getContext('2d');
                     if (ctx) {
-                        ctx.drawImage(tempCanvas, 0, 0, canvasWidth, canvasHeight, 0, 0, canvasWidth, canvasHeight);
+                        ctx.drawImage(tempCanvas, 0, 0, canvasState.width, canvasState.height, 0, 0, canvasState.width, canvasState.height);
                     }
                 }
 
@@ -95,7 +92,7 @@ const Controls: React.FC<ControlsProps> = ({
             const downloadLink = document.createElement('a');
             if (downloadLink) {
                 downloadLink.href = imageDataURL;
-                downloadLink.download = `${fileName}-tiled-${canvasWidth}x${canvasHeight}.png`; // Name of the file to be downloaded
+                downloadLink.download = `${fileName}-tiled-${canvasState.width}x${canvasState.height}.png`; // Name of the file to be downloaded
             }
 
 
@@ -144,7 +141,7 @@ const Controls: React.FC<ControlsProps> = ({
                 <Box sx={{ margin: theme => theme.spacing(6, 0) }}>
                     <Box sx={controlStyles}>
                         <TextField
-                            value={canvasWidth}
+                            value={canvasState.width}
                             variant="standard"
                             size="small"
                             sx={{ paddingRight: theme => theme.spacing(1), width: '160px' }}
@@ -156,14 +153,14 @@ const Controls: React.FC<ControlsProps> = ({
                                 if (canvasRef?.current) {
                                     const canvasWidth = parseInt(e.target.value)
                                     canvasRef.current.width = canvasWidth;
-                                    setCanvasWidth(canvasWidth)
+                                    setCanvasState((prev: CanvasDimensions) => ({ ...prev, width: canvasWidth }))
                                 }
 
                             }}
                         />
                         <Box sx={{ fontWeight: 'bold' }}>X</Box>
                         <TextField
-                            value={canvasHeight}
+                            value={canvasState.height}
                             variant="standard"
                             size="small"
                             sx={{ padding: theme => theme.spacing(0, 1), width: '160px' }}
@@ -175,7 +172,7 @@ const Controls: React.FC<ControlsProps> = ({
                                 if (canvasRef?.current) {
                                     const canvasHeight = parseInt(e.target.value);
                                     canvasRef.current.height = canvasHeight;
-                                    setCanvasHeight(canvasHeight);
+                                    setCanvasState((prev: CanvasDimensions) => ({ ...prev, height: canvasHeight }));
                                 }
                             }}
                         />

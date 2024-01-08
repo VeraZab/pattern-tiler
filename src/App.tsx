@@ -7,11 +7,20 @@ import Controls from './components/Controls';
 import Layout from './components/Layout';
 import { theme } from './theme';
 
+export interface CanvasDimensions {
+  width: number,
+  height: number,
+}
+
 
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [canvasWidth, setCanvasWidth] = useState(6000);
-  const [canvasHeight, setCanvasHeight] = useState(6000);
+  const [canvasState, setCanvasState] = useState<CanvasDimensions>({
+    width: 6000,
+    height: 6000,
+  });
+
+
   const [originalTileHeight, setOriginalTileHeight] = useState(0);
   const [originalTileWidth, setOriginalTileWidth] = useState(0);
   const [tileHeight, setTileHeight] = useState(0);
@@ -65,18 +74,15 @@ const App: React.FC = () => {
         >
           <Canvas
             canvasRef={canvasRef}
-            canvasHeight={canvasHeight}
-            canvasWidth={canvasWidth}
+            canvasState={canvasState}
             tileHeight={tileHeight}
             tileWidth={tileWidth}
             image={image}
           />
           <Controls
             canvasRef={canvasRef}
-            canvasWidth={canvasWidth}
-            canvasHeight={canvasHeight}
-            setCanvasHeight={setCanvasHeight}
-            setCanvasWidth={setCanvasWidth}
+            canvasState={canvasState}
+            setCanvasState={setCanvasState}
             fileName={fileName}
             setTileHeight={setTileHeight}
             setTileWidth={setTileWidth}

@@ -1,35 +1,36 @@
 import Box from '@mui/material/Box';
 import { useEffect } from 'react';
 
+import { CanvasDimensions } from '../App';
+
 interface CanvasProps {
-    canvasHeight: number;
-    canvasWidth: number;
+    canvasState: CanvasDimensions;
     tileHeight: number;
     tileWidth: number;
     image: HTMLImageElement | null;
     canvasRef: React.RefObject<HTMLCanvasElement>;
 }
 
-const Canvas: React.FC<CanvasProps> = ({ canvasRef, tileHeight, tileWidth, image, canvasWidth, canvasHeight }) => {
+const Canvas: React.FC<CanvasProps> = ({ canvasRef, tileHeight, tileWidth, image, canvasState }) => {
     useEffect(() => {
         const canvas = canvasRef.current;
         if (canvas) {
-            canvasRef.current.width = canvasWidth;
-            canvasRef.current.height = canvasHeight;
+            canvasRef.current.width = canvasState.width;
+            canvasRef.current.height = canvasState.height;
         }
 
-    }, [canvasHeight, canvasWidth, canvasRef]);
+    }, [canvasState, canvasRef]);
 
     useEffect(() => {
         if (image && canvasRef.current) {
             const ctx = canvasRef.current.getContext('2d');
             if (ctx) {
-                ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                ctx.clearRect(0, 0, canvasState.width, canvasState.height);
                 ctx.drawImage(image, 0, 0, tileWidth, tileHeight);
             }
         }
 
-    }, [image, canvasRef, tileHeight, tileWidth, canvasWidth, canvasHeight])
+    }, [image, canvasRef, tileHeight, tileWidth, canvasState])
 
     return (
         <Box
