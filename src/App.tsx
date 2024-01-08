@@ -1,30 +1,29 @@
-import { ThemeProvider } from '@emotion/react';
-import Box from '@mui/material/Box';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ThemeProvider } from "@emotion/react";
+import Box from "@mui/material/Box";
+import { ChangeEvent, useRef, useState } from "react";
 
-import Canvas from './components/Canvas';
-import Controls from './components/Controls';
-import Layout from './components/Layout';
-import { theme } from './theme';
+import Canvas from "./components/Canvas";
+import Controls from "./components/Controls";
+import Layout from "./components/Layout";
+import { theme } from "./theme";
 
 export interface CanvasDimensions {
-  width: number,
-  height: number,
+  width: number;
+  height: number;
 }
 
 export interface TileDimensions {
-  originalWidth: number,
-  originalHeight: number,
-  width: number,
-  height: number,
+  originalWidth: number;
+  originalHeight: number;
+  width: number;
+  height: number;
 }
 
 export interface ImageAttributes {
-  url: string | null,
-  fileName: string | null,
-  image: HTMLImageElement | null
+  url: string | null;
+  fileName: string | null;
+  image: HTMLImageElement | null;
 }
-
 
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -37,21 +36,24 @@ const App: React.FC = () => {
     originalHeight: 0,
     originalWidth: 0,
     width: 0,
-    height: 0
+    height: 0,
   });
 
   const [imageState, setImageState] = useState<ImageAttributes>({
     image: null,
     fileName: null,
-    url: null
+    url: null,
   });
-
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
-    if (file && file.type.match('image.*')) {
+    if (file && file.type.match("image.*")) {
       const imageUrl = URL.createObjectURL(file);
-      setImageState(prev => ({ ...prev, url: imageUrl, fileName: file.name.replace('.png', '') }));
+      setImageState((prev) => ({
+        ...prev,
+        url: imageUrl,
+        fileName: file.name.replace(".png", ""),
+      }));
 
       const img = new Image();
 
@@ -60,36 +62,30 @@ const App: React.FC = () => {
           originalHeight: img.naturalHeight,
           originalWidth: img.naturalWidth,
           height: img.naturalHeight,
-          width: img.naturalWidth
-        })
+          width: img.naturalWidth,
+        });
 
-        setImageState(prev => ({ ...prev, image: img }));
-      }
+        setImageState((prev) => ({ ...prev, image: img }));
+      };
 
       img.src = imageUrl;
     }
   };
 
-
   return (
     <ThemeProvider theme={theme}>
       <Layout>
         <Box
-          sx={
-            theme => (
-              {
-                display: 'flex',
-                flex: 1,
-                overflowY: 'auto',
-                backgroundColor: '#e3e1e1',
-                margin: `${theme.spacing(2)} 0`,
-                [theme.breakpoints.down('sm')]: {
-                  flexDirection: 'column-reverse',
-
-                }
-              }
-            )
-          }
+          sx={(theme) => ({
+            display: "flex",
+            flex: 1,
+            overflowY: "auto",
+            backgroundColor: "#e3e1e1",
+            margin: `${theme.spacing(2)} 0`,
+            [theme.breakpoints.down("sm")]: {
+              flexDirection: "column-reverse",
+            },
+          })}
         >
           <Canvas
             canvasRef={canvasRef}
@@ -108,8 +104,8 @@ const App: React.FC = () => {
           />
         </Box>
       </Layout>
-    </ThemeProvider >
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
