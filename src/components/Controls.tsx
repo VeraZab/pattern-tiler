@@ -4,7 +4,7 @@ import { Box, Button, IconButton, InputAdornment, TextField } from '@mui/materia
 import { Theme } from '@mui/material/styles';
 import { ChangeEvent } from 'react';
 
-import { CanvasDimensions, TileDimensions } from '../App';
+import { CanvasDimensions, ImageAttributes, TileDimensions } from '../App';
 import ImageInput from './ImageInput';
 
 const controlStyles = {
@@ -20,9 +20,7 @@ interface ControlsProps {
     setCanvasState: React.Dispatch<React.SetStateAction<CanvasDimensions>>;
     tileState: TileDimensions;
     setTileState: React.Dispatch<React.SetStateAction<TileDimensions>>;
-    imageUrl: string | null;
-    setImageUrl: (imageUrl: string) => void;
-    fileName: string;
+    imageState: ImageAttributes;
     handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -32,12 +30,11 @@ const Controls: React.FC<ControlsProps> = ({
     setCanvasState,
     tileState,
     setTileState,
-    imageUrl,
-    fileName,
+    imageState,
     handleFileChange
 }) => {
     const tile = () => {
-        if (imageUrl && canvasRef.current) {
+        if (imageState.url && canvasRef.current) {
             const img = new Image();
             img.width = tileState.width;
             img.height = tileState.height;
@@ -71,7 +68,7 @@ const Controls: React.FC<ControlsProps> = ({
 
             }
 
-            img.src = imageUrl;
+            img.src = imageState.url;
         }
     }
 
@@ -84,7 +81,7 @@ const Controls: React.FC<ControlsProps> = ({
             const downloadLink = document.createElement('a');
             if (downloadLink) {
                 downloadLink.href = imageDataURL;
-                downloadLink.download = `${fileName}-tiled-${canvasState.width}x${canvasState.height}.png`; // Name of the file to be downloaded
+                downloadLink.download = `${imageState.fileName}-tiled-${canvasState.width}x${canvasState.height}.png`; // Name of the file to be downloaded
             }
 
 

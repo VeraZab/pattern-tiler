@@ -19,6 +19,12 @@ export interface TileDimensions {
   height: number,
 }
 
+export interface ImageAttributes {
+  url: string | null,
+  fileName: string | null,
+  image: HTMLImageElement | null
+}
+
 
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -34,17 +40,18 @@ const App: React.FC = () => {
     height: 0
   });
 
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>('');
-  const [image, setImage] = useState<HTMLImageElement | null>(null);
+  const [imageState, setImageState] = useState<ImageAttributes>({
+    image: null,
+    fileName: null,
+    url: null
+  });
+
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (file && file.type.match('image.*')) {
       const imageUrl = URL.createObjectURL(file);
-
-      setImageUrl(imageUrl);
-      setFileName(file.name.replace('.png', ''))
+      setImageState(prev => ({ ...prev, url: imageUrl, fileName: file.name.replace('.png', '') }));
 
       const img = new Image();
 
@@ -56,7 +63,7 @@ const App: React.FC = () => {
           width: img.naturalWidth
         })
 
-        setImage(img);
+        setImageState(prev => ({ ...prev, image: img }));
       }
 
       img.src = imageUrl;
@@ -88,7 +95,7 @@ const App: React.FC = () => {
             canvasRef={canvasRef}
             canvasState={canvasState}
             tileState={tileState}
-            image={image}
+            imageState={imageState}
           />
           <Controls
             canvasRef={canvasRef}
@@ -96,10 +103,8 @@ const App: React.FC = () => {
             setCanvasState={setCanvasState}
             tileState={tileState}
             setTileState={setTileState}
-            fileName={fileName}
+            imageState={imageState}
             handleFileChange={handleFileChange}
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
           />
         </Box>
       </Layout>
