@@ -2,11 +2,12 @@ import { ThemeProvider } from "@emotion/react";
 import Box from "@mui/material/Box";
 import { ChangeEvent, useRef, useState } from "react";
 
+import { Theme } from "@mui/material";
 import Canvas from "./components/Canvas";
 import Controls from "./components/Controls";
 import Layout from "./components/Layout";
 import { theme } from "./theme";
-import { Theme } from "@mui/material";
+import { CanvasDimensions, ImageAttributes, TileDimensions } from "./types/appState";
 
 export const layoutStyles = (theme: Theme) => ({
   display: "flex",
@@ -18,25 +19,6 @@ export const layoutStyles = (theme: Theme) => ({
     flexDirection: "column-reverse",
   },
 });
-
-export interface CanvasDimensions {
-  width: number;
-  height: number;
-}
-
-export interface TileDimensions {
-  originalWidth: number;
-  originalHeight: number;
-  width: number;
-  height: number;
-}
-
-export interface ImageAttributes {
-  url: string | null;
-  fileName: string | null;
-  image: HTMLImageElement | null;
-}
-
 
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

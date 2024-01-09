@@ -2,9 +2,9 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { Box, Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { Theme } from "@mui/material/styles";
-import { ChangeEvent } from "react";
 
-import { CanvasDimensions, ImageAttributes, TileDimensions } from "../App";
+import { CanvasDimensions } from "../types/appState";
+import { ControlsProps } from "../types/controls";
 import ImageInput from "./ImageInput";
 
 const controlsContainerStyles = (theme: Theme) => ({
@@ -49,16 +49,6 @@ const controlsTextStyles = {
 
 const mainControlsContainer = {
   margin: (theme: Theme) => theme.spacing(6, 0)
-}
-
-interface ControlsProps {
-  canvasRef: React.RefObject<HTMLCanvasElement>;
-  canvasState: CanvasDimensions;
-  setCanvasState: React.Dispatch<React.SetStateAction<CanvasDimensions>>;
-  tileState: TileDimensions;
-  setTileState: React.Dispatch<React.SetStateAction<TileDimensions>>;
-  imageState: ImageAttributes;
-  handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Controls: React.FC<ControlsProps> = ({
