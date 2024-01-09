@@ -2,6 +2,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { Box, Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { Theme } from "@mui/material/styles";
+import { ChangeEvent } from "react";
 
 import { CanvasDimensions } from "../types/appState";
 import { ControlsProps } from "../types/controls";
@@ -58,8 +59,35 @@ const Controls: React.FC<ControlsProps> = ({
   tileState,
   setTileState,
   imageState,
-  handleFileChange,
+  setImageState
 }) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    if (file && file.type.match("image.*")) {
+      const imageUrl = URL.createObjectURL(file);
+      setImageState((prev) => ({
+        ...prev,
+        url: imageUrl,
+        fileName: file.name.replace(".png", ""),
+      }));
+
+      const img = new Image();
+
+      img.onload = () => {
+        setTileState({
+          originalHeight: img.naturalHeight,
+          originalWidth: img.naturalWidth,
+          height: img.naturalHeight,
+          width: img.naturalWidth,
+        });
+
+        setImageState((prev) => ({ ...prev, image: img }));
+      };
+
+      img.src = imageUrl;
+    }
+  };
+
   const tile = () => {
     if (imageState.url && canvasRef.current) {
       const img = new Image();
@@ -139,7 +167,7 @@ const Controls: React.FC<ControlsProps> = ({
         >
           <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
             Upload tile
-            <ImageInput type="file" onChange={handleFileChange} />
+            <ImageInput onChange={handleFileChange} />
           </Button>
         </Box>
 
@@ -165,7 +193,9 @@ const Controls: React.FC<ControlsProps> = ({
                 }
               }}
             />
+
             <Box sx={controlsTextStyles}>X</Box>
+
             <TextField
               value={canvasState.height}
               variant="standard"
@@ -186,8 +216,10 @@ const Controls: React.FC<ControlsProps> = ({
                 }
               }}
             />
+
             <Box sx={controlsTextStyles}>Canvas Size</Box>
           </Box>
+
           <Box sx={controlStyles}>
             <TextField
               value={tileState.width}
@@ -208,7 +240,9 @@ const Controls: React.FC<ControlsProps> = ({
                 }
               }}
             />
+
             <Box sx={controlsTextStyles}>X</Box>
+
             <TextField
               value={tileState.height}
               variant="standard"
@@ -228,7 +262,9 @@ const Controls: React.FC<ControlsProps> = ({
                 }
               }}
             />
+
             <Box sx={controlsTextStyles}>Tile Size</Box>
+
             <IconButton
               onClick={() => {
                 setTileState((prev) => ({
@@ -252,6 +288,7 @@ const Controls: React.FC<ControlsProps> = ({
               Tile
             </Button>
           </Box>
+
           <Box>
             <Button variant="contained" onClick={download} disableElevation>
               Download

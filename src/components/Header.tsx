@@ -33,6 +33,7 @@ const Header: React.FC = () => {
           src="pattern-tiler-logo.png"
           style={logoStyles}
         />
+
         <Box
           sx={appTitleStyles}
         >
@@ -53,6 +54,7 @@ const Header: React.FC = () => {
             >
               About this tool
             </Box>
+
             <HelpIcon />
           </Box>
         </Tooltip>

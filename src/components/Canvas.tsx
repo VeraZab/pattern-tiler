@@ -29,7 +29,7 @@ const Canvas: React.FC<CanvasProps> = ({ canvasRef, tileState, imageState, canva
       canvasRef.current.width = canvasState.width;
       canvasRef.current.height = canvasState.height;
     }
-  }, [canvasState, canvasRef]);
+  }, [canvasState.height, canvasState.width, canvasRef]);
 
   useEffect(() => {
     if (imageState.image && canvasRef.current) {
@@ -39,7 +39,7 @@ const Canvas: React.FC<CanvasProps> = ({ canvasRef, tileState, imageState, canva
         ctx.drawImage(imageState.image, 0, 0, tileState.width, tileState.height);
       }
     }
-  }, [imageState.image, canvasRef, tileState, canvasState]);
+  }, [imageState.image, canvasRef, tileState, canvasState.width, canvasState.height]);
 
   return (
     <Box

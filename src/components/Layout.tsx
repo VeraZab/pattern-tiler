@@ -21,7 +21,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       sx={layoutContainerStyles}
     >
       <Header />
+
       {children}
+
       <Footer />
     </Box>
   );

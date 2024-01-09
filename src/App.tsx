@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@emotion/react";
 import Box from "@mui/material/Box";
-import { ChangeEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { Theme } from "@mui/material";
 import Canvas from "./components/Canvas";
@@ -40,33 +40,6 @@ const App: React.FC = () => {
     url: null,
   });
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (file && file.type.match("image.*")) {
-      const imageUrl = URL.createObjectURL(file);
-      setImageState((prev) => ({
-        ...prev,
-        url: imageUrl,
-        fileName: file.name.replace(".png", ""),
-      }));
-
-      const img = new Image();
-
-      img.onload = () => {
-        setTileState({
-          originalHeight: img.naturalHeight,
-          originalWidth: img.naturalWidth,
-          height: img.naturalHeight,
-          width: img.naturalWidth,
-        });
-
-        setImageState((prev) => ({ ...prev, image: img }));
-      };
-
-      img.src = imageUrl;
-    }
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Layout>
@@ -86,7 +59,7 @@ const App: React.FC = () => {
             tileState={tileState}
             setTileState={setTileState}
             imageState={imageState}
-            handleFileChange={handleFileChange}
+            setImageState={setImageState}
           />
         </Box>
       </Layout>

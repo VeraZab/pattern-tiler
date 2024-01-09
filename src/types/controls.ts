@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 
 import { CanvasDimensions, ImageAttributes, TileDimensions } from "../types/appState";
 
@@ -9,5 +9,5 @@ export interface ControlsProps {
     tileState: TileDimensions;
     setTileState: React.Dispatch<React.SetStateAction<TileDimensions>>;
     imageState: ImageAttributes;
-    handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    setImageState: React.Dispatch<React.SetStateAction<ImageAttributes>>;
 }
