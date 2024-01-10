@@ -243,7 +243,7 @@ const Controls: React.FC<ControlsProps> = ({
 
       <Box sx={mainActionsContainerStyles}>
         <Box sx={tileContainerStyles}>
-          <Button variant="outlined" onClick={tile}>
+          <Button variant="contained" color="secondary" onClick={tile} >
             Tile
           </Button>
         </Box>
