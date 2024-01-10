@@ -11,35 +11,35 @@ export const controlsContainerStyles = (theme: Theme) => ({
   },
 });
 
-export const controlStyles = {
+export const controlStyles = (theme: Theme) => ({
   display: "flex",
   alignItems: "center",
-  padding: (theme: Theme) => theme.spacing(0.5),
-  marginBottom: (theme: Theme) => theme.spacing(1),
-};
+  padding: theme.spacing(0.5),
+  marginBottom: theme.spacing(1),
+});
 
-export const uploadContainerStyles = {
-  marginBottom: (theme: Theme) => theme.spacing(1),
-};
+export const uploadContainerStyles = (theme: Theme) => ({
+  marginBottom: theme.spacing(1),
+});
 
-export const canvasWidthStyles = {
-  paddingRight: (theme: Theme) => theme.spacing(1),
+export const canvasWidthStyles = (theme: Theme) => ({
+  paddingRight: theme.spacing(1),
   width: "160px",
-};
+});
 
-export const canvasHeightStyles = {
-  padding: (theme: Theme) => theme.spacing(0, 1),
+export const canvasHeightStyles = (theme: Theme) => ({
+  padding: theme.spacing(0, 1),
   width: "160px",
-};
+});
 
-export const tileContainerStyles = {
-  marginRight: (theme: Theme) => theme.spacing(1),
-};
+export const tileContainerStyles = (theme: Theme) => ({
+  marginRight: theme.spacing(1),
+});
 
 export const controlsTextStyles = {
   fontWeight: "bold",
 };
 
-export const mainControlsContainer = {
-  margin: (theme: Theme) => theme.spacing(6, 0),
-};
+export const mainControlsContainer = (theme: Theme) => ({
+  margin: theme.spacing(6, 0),
+});
