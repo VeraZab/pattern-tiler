@@ -6,8 +6,11 @@ export const controlsContainerStyles = (theme: Theme) => ({
   justifyContent: "center",
   flexDirection: "column",
   width: "50%",
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("md")]: {
+    justifyContent: "start ",
     width: "100%",
+    padding: theme.spacing(4),
+    boxSizing: "border-box"
   },
 });
 
@@ -20,7 +23,19 @@ export const controlStyles = (theme: Theme) => ({
 
 export const uploadContainerStyles = (theme: Theme) => ({
   marginBottom: theme.spacing(1),
+  width: "100%"
 });
+
+export const mainControlsContainer = (theme: Theme) => ({
+  margin: theme.spacing(3, 0),
+  width: "100%",
+});
+
+export const mainActionsContainerStyles = (theme: Theme) => ({
+  display: "flex",
+  justifyContent: "start",
+  width: "100%",
+})
 
 export const canvasWidthStyles = (theme: Theme) => ({
   paddingRight: theme.spacing(1),
@@ -40,6 +55,5 @@ export const controlsTextStyles = {
   fontWeight: "bold",
 };
 
-export const mainControlsContainer = (theme: Theme) => ({
-  margin: theme.spacing(6, 0),
-});
+
+

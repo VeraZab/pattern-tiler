@@ -9,6 +9,7 @@ import {
   controlStyles,
   controlsContainerStyles,
   controlsTextStyles,
+  mainActionsContainerStyles,
   mainControlsContainer,
   tileContainerStyles,
   uploadContainerStyles,
@@ -124,135 +125,133 @@ const Controls: React.FC<ControlsProps> = ({
 
   return (
     <Box sx={controlsContainerStyles}>
-      <Box>
-        <Box sx={uploadContainerStyles}>
-          <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-            Upload tile
-            <ImageInput onChange={handleFileChange} />
-          </Button>
-        </Box>
+      <Box sx={uploadContainerStyles}>
+        <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+          Upload tile
+          <ImageInput onChange={handleFileChange} />
+        </Button>
+      </Box>
 
-        <Box sx={mainControlsContainer}>
-          <Box sx={controlStyles}>
-            <TextField
-              value={canvasState.width}
-              variant="standard"
-              size="small"
-              sx={canvasWidthStyles}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">px (width)</InputAdornment>,
-              }}
-              type="number"
-              onChange={(e) => {
-                if (canvasRef?.current) {
-                  const canvasWidth = parseInt(e.target.value);
-                  canvasRef.current.width = canvasWidth;
-                  setCanvasState((prev: CanvasDimensions) => ({
-                    ...prev,
-                    width: canvasWidth,
-                  }));
-                }
-              }}
-            />
-
-            <Box sx={controlsTextStyles}>X</Box>
-
-            <TextField
-              value={canvasState.height}
-              variant="standard"
-              size="small"
-              sx={canvasHeightStyles}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">px (height)</InputAdornment>,
-              }}
-              type="number"
-              onChange={(e) => {
-                if (canvasRef?.current) {
-                  const canvasHeight = parseInt(e.target.value);
-                  canvasRef.current.height = canvasHeight;
-                  setCanvasState((prev: CanvasDimensions) => ({
-                    ...prev,
-                    height: canvasHeight,
-                  }));
-                }
-              }}
-            />
-
-            <Box sx={controlsTextStyles}>Canvas Size</Box>
-          </Box>
-
-          <Box sx={controlStyles}>
-            <TextField
-              value={tileState.width}
-              variant="standard"
-              size="small"
-              sx={canvasWidthStyles}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">px (width)</InputAdornment>,
-              }}
-              type="number"
-              onChange={(e) => {
-                if (canvasRef.current) {
-                  const tileWidth = parseInt(e.target.value);
-                  setTileState((prev) => ({
-                    ...prev,
-                    width: tileWidth,
-                  }));
-                }
-              }}
-            />
-
-            <Box sx={controlsTextStyles}>X</Box>
-
-            <TextField
-              value={tileState.height}
-              variant="standard"
-              size="small"
-              sx={canvasHeightStyles}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">px (height)</InputAdornment>,
-              }}
-              type="number"
-              onChange={(e) => {
-                if (canvasRef.current) {
-                  const tileHeight = parseInt(e.target.value);
-                  setTileState((prev) => ({
-                    ...prev,
-                    height: tileHeight,
-                  }));
-                }
-              }}
-            />
-
-            <Box sx={controlsTextStyles}>Tile Size</Box>
-
-            <IconButton
-              onClick={() => {
-                setTileState((prev) => ({
+      <Box sx={mainControlsContainer}>
+        <Box sx={controlStyles}>
+          <TextField
+            value={canvasState.width}
+            variant="standard"
+            size="small"
+            sx={canvasWidthStyles}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">px (width)</InputAdornment>,
+            }}
+            type="number"
+            onChange={(e) => {
+              if (canvasRef?.current) {
+                const canvasWidth = parseInt(e.target.value);
+                canvasRef.current.width = canvasWidth;
+                setCanvasState((prev: CanvasDimensions) => ({
                   ...prev,
-                  width: tileState.originalWidth,
-                  height: tileState.originalHeight,
+                  width: canvasWidth,
                 }));
-              }}
-              disabled={!tileState.originalHeight || !tileState.originalWidth}
-            >
-              <ReplayIcon />
-            </IconButton>
-          </Box>
+              }
+            }}
+          />
+
+          <Box sx={controlsTextStyles}>X</Box>
+
+          <TextField
+            value={canvasState.height}
+            variant="standard"
+            size="small"
+            sx={canvasHeightStyles}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">px (height)</InputAdornment>,
+            }}
+            type="number"
+            onChange={(e) => {
+              if (canvasRef?.current) {
+                const canvasHeight = parseInt(e.target.value);
+                canvasRef.current.height = canvasHeight;
+                setCanvasState((prev: CanvasDimensions) => ({
+                  ...prev,
+                  height: canvasHeight,
+                }));
+              }
+            }}
+          />
+
+          <Box sx={controlsTextStyles}>Canvas Size</Box>
         </Box>
 
         <Box sx={controlStyles}>
-          <Box sx={tileContainerStyles}>
-            <Button variant="outlined" onClick={tile}>
-              Tile
-            </Button>
-          </Box>
+          <TextField
+            value={tileState.width}
+            variant="standard"
+            size="small"
+            sx={canvasWidthStyles}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">px (width)</InputAdornment>,
+            }}
+            type="number"
+            onChange={(e) => {
+              if (canvasRef.current) {
+                const tileWidth = parseInt(e.target.value);
+                setTileState((prev) => ({
+                  ...prev,
+                  width: tileWidth,
+                }));
+              }
+            }}
+          />
 
-          <Box>
-            <Button variant="contained" onClick={download} disableElevation>
-              Download
-            </Button>
-          </Box>
+          <Box sx={controlsTextStyles}>X</Box>
+
+          <TextField
+            value={tileState.height}
+            variant="standard"
+            size="small"
+            sx={canvasHeightStyles}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">px (height)</InputAdornment>,
+            }}
+            type="number"
+            onChange={(e) => {
+              if (canvasRef.current) {
+                const tileHeight = parseInt(e.target.value);
+                setTileState((prev) => ({
+                  ...prev,
+                  height: tileHeight,
+                }));
+              }
+            }}
+          />
+
+          <Box sx={controlsTextStyles}>Tile Size</Box>
+
+          <IconButton
+            onClick={() => {
+              setTileState((prev) => ({
+                ...prev,
+                width: tileState.originalWidth,
+                height: tileState.originalHeight,
+              }));
+            }}
+            disabled={!tileState.originalHeight || !tileState.originalWidth}
+          >
+            <ReplayIcon />
+          </IconButton>
+        </Box>
+      </Box>
+
+      <Box sx={mainActionsContainerStyles}>
+        <Box sx={tileContainerStyles}>
+          <Button variant="outlined" onClick={tile}>
+            Tile
+          </Button>
+        </Box>
+
+        <Box>
+          <Button variant="contained" onClick={download} disableElevation>
+            Download
+          </Button>
         </Box>
       </Box>
     </Box>

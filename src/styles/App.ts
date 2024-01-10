@@ -6,7 +6,7 @@ export const layoutStyles = (theme: Theme) => ({
   overflowY: "auto",
   backgroundColor: "#e3e1e1",
   margin: `${theme.spacing(2)} 0`,
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("md")]: {
     flexDirection: "column-reverse",
   },
 });

@@ -7,8 +7,10 @@ export const canvasContainerStyles = (theme: Theme) => ({
   justifyContent: "center",
   width: "50%",
   padding: theme.spacing(3.5),
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(3.5),
     width: "100%",
+    boxSizing: "border-box"
   },
 });
 
