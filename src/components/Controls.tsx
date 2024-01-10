@@ -1,56 +1,21 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { Box, Button, IconButton, InputAdornment, TextField } from "@mui/material";
-import { Theme } from "@mui/material/styles";
 import { ChangeEvent } from "react";
 
+import {
+  canvasHeightStyles,
+  canvasWidthStyles,
+  controlStyles,
+  controlsContainerStyles,
+  controlsTextStyles,
+  mainControlsContainer,
+  tileContainerStyles,
+  uploadContainerStyles,
+} from "../styles/Controls";
 import { CanvasDimensions } from "../types/appState";
 import { ControlsProps } from "../types/controls";
 import ImageInput from "./ImageInput";
-
-const controlsContainerStyles = (theme: Theme) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  flexDirection: "column",
-  width: "50%",
-  [theme.breakpoints.down("sm")]: {
-    width: "100%",
-  },
-});
-
-const controlStyles = {
-  display: "flex",
-  alignItems: "center",
-  padding: (theme: Theme) => theme.spacing(0.5),
-  marginBottom: (theme: Theme) => theme.spacing(1),
-};
-
-const uploadContainerStyles = {
-  marginBottom: (theme: Theme) => theme.spacing(1),
-}
-
-const canvasWidthStyles = {
-  paddingRight: (theme: Theme) => theme.spacing(1),
-  width: "160px",
-}
-
-const canvasHeightStyles = {
-  padding: (theme: Theme) => theme.spacing(0, 1),
-  width: "160px",
-}
-
-const tileContainerStyles = {
-  marginRight: (theme: Theme) => theme.spacing(1),
-}
-
-const controlsTextStyles = {
-  fontWeight: 'bold'
-}
-
-const mainControlsContainer = {
-  margin: (theme: Theme) => theme.spacing(6, 0)
-}
 
 const Controls: React.FC<ControlsProps> = ({
   canvasRef,
@@ -59,7 +24,7 @@ const Controls: React.FC<ControlsProps> = ({
   tileState,
   setTileState,
   imageState,
-  setImageState
+  setImageState,
 }) => {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -158,13 +123,9 @@ const Controls: React.FC<ControlsProps> = ({
   };
 
   return (
-    <Box
-      sx={controlsContainerStyles}
-    >
+    <Box sx={controlsContainerStyles}>
       <Box>
-        <Box
-          sx={uploadContainerStyles}
-        >
+        <Box sx={uploadContainerStyles}>
           <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
             Upload tile
             <ImageInput onChange={handleFileChange} />
@@ -281,9 +242,7 @@ const Controls: React.FC<ControlsProps> = ({
         </Box>
 
         <Box sx={controlStyles}>
-          <Box
-            sx={tileContainerStyles}
-          >
+          <Box sx={tileContainerStyles}>
             <Button variant="outlined" onClick={tile}>
               Tile
             </Button>

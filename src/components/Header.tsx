@@ -1,21 +1,12 @@
 import HelpIcon from "@mui/icons-material/Help";
-import { Box, Theme, Tooltip } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 
-const headerContainerStyles = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-}
-
-const leftHandSideContainerStyles = { display: "flex", alignItems: "center" }
-
-const logoStyles = { width: "50px", paddingRight: "15px" }
-
-const appTitleStyles = (theme: Theme) => ({
-  fontSize: "30px",
-  fontWeight: "bold",
-  fontFamily: "monospace",
-})
+import {
+  appTitleStyles,
+  headerContainerStyles,
+  leftHandSideContainerStyles,
+  logoStyles
+} from "../styles/Header";
 
 const Header: React.FC = () => {
   const aboutTilemaker =
@@ -24,21 +15,11 @@ const Header: React.FC = () => {
     "Ready for printing!";
 
   return (
-    <Box
-      sx={headerContainerStyles}
-    >
+    <Box sx={headerContainerStyles}>
       <Box sx={leftHandSideContainerStyles}>
-        <img
-          alt="pattern-tiler logo"
-          src="pattern-tiler-logo.png"
-          style={logoStyles}
-        />
+        <img alt="pattern-tiler logo" src="pattern-tiler-logo.png" style={logoStyles} />
 
-        <Box
-          sx={appTitleStyles}
-        >
-          Pattern Tiler
-        </Box>
+        <Box sx={appTitleStyles}>Pattern Tiler</Box>
       </Box>
 
       <Box>

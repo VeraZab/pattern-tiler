@@ -2,23 +2,12 @@ import { ThemeProvider } from "@emotion/react";
 import Box from "@mui/material/Box";
 import { useRef, useState } from "react";
 
-import { Theme } from "@mui/material";
 import Canvas from "./components/Canvas";
 import Controls from "./components/Controls";
 import Layout from "./components/Layout";
+import { layoutStyles } from "./styles/App";
 import { theme } from "./theme";
 import { CanvasDimensions, ImageAttributes, TileDimensions } from "./types/appState";
-
-export const layoutStyles = (theme: Theme) => ({
-  display: "flex",
-  flex: 1,
-  overflowY: "auto",
-  backgroundColor: "#e3e1e1",
-  margin: `${theme.spacing(2)} 0`,
-  [theme.breakpoints.down("sm")]: {
-    flexDirection: "column-reverse",
-  },
-});
 
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -43,9 +32,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <Layout>
-        <Box
-          sx={layoutStyles}
-        >
+        <Box sx={layoutStyles}>
           <Canvas
             canvasRef={canvasRef}
             canvasState={canvasState}
