@@ -1,7 +1,9 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import LockIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 import ReplayIcon from "@mui/icons-material/Replay";
 import { Box, Button, IconButton, InputAdornment, TextField, Tooltip } from "@mui/material";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 import {
   canvasHeightStyles,
@@ -27,6 +29,8 @@ const Controls: React.FC<ControlsProps> = ({
   imageState,
   setImageState,
 }) => {
+  const [resizeProportionately, setResizeProportionately] = useState(true);
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (file && file.type.match("image.*")) {
@@ -123,6 +127,29 @@ const Controls: React.FC<ControlsProps> = ({
     }
   };
 
+  const getProportionalDimension = (
+    currentWidth: number,
+    currentHeight: number,
+    newWidth?: number | undefined,
+    newHeight?: number | undefined,
+  ) => {
+    let calculatedWidth = newWidth;
+    let calculatedHeight = newHeight;
+
+    if (newWidth) {
+      calculatedHeight = (currentHeight * newWidth) / currentWidth;
+    }
+
+    if (newHeight) {
+      calculatedWidth = (newHeight * currentWidth) / currentHeight;
+    }
+
+    return {
+      width: calculatedWidth ?? currentWidth,
+      height: calculatedHeight ?? currentHeight,
+    };
+  };
+
   return (
     <Box sx={controlsContainerStyles}>
       <Box sx={uploadContainerStyles}>
@@ -194,10 +221,19 @@ const Controls: React.FC<ControlsProps> = ({
             onChange={(e) => {
               if (canvasRef.current) {
                 const tileWidth = parseInt(e.target.value);
-                setTileState((prev) => ({
-                  ...prev,
-                  width: tileWidth,
-                }));
+                if (resizeProportionately) {
+                  const dimensions = getProportionalDimension(tileState.width, tileState.height, tileWidth, undefined);
+                  setTileState((prev) => ({
+                    ...prev,
+                    width: dimensions.width,
+                    height: dimensions.height
+                  }));
+                } else {
+                  setTileState((prev) => ({
+                    ...prev,
+                    width: tileWidth,
+                  }));
+                }
               }
             }}
           />
@@ -216,16 +252,36 @@ const Controls: React.FC<ControlsProps> = ({
             onChange={(e) => {
               if (canvasRef.current) {
                 const tileHeight = parseInt(e.target.value);
-                setTileState((prev) => ({
-                  ...prev,
-                  height: tileHeight,
-                }));
+                if (resizeProportionately) {
+                  const dimensions = getProportionalDimension(tileState.width, tileState.height, undefined, tileHeight);
+                  setTileState((prev) => ({
+                    ...prev,
+                    width: dimensions.width,
+                    height: dimensions.height
+                  }));
+                } else {
+                  setTileState((prev) => ({
+                    ...prev,
+                    height: tileHeight,
+                  }));
+                }
               }
             }}
           />
 
           <Box sx={controlsTextStyles}>Tile Size</Box>
 
+          <Tooltip className="tooltip" title="Resize proportionately">
+            <Box>
+              <IconButton
+                onClick={() => {
+                  setResizeProportionately(prev => !prev)
+                }}
+              >
+                {resizeProportionately ? <LockIcon /> : <LockOpenIcon />}
+              </IconButton>
+            </Box>
+          </Tooltip>
 
           <Tooltip className="tooltip" title="Reset to original tile dimensions.">
             <Box>
@@ -243,13 +299,12 @@ const Controls: React.FC<ControlsProps> = ({
               </IconButton>
             </Box>
           </Tooltip>
-
         </Box>
       </Box>
 
       <Box sx={mainActionsContainerStyles}>
         <Box sx={tileContainerStyles}>
-          <Button variant="outlined" onClick={tile} >
+          <Button variant="outlined" onClick={tile}>
             Tile
           </Button>
         </Box>
@@ -260,7 +315,7 @@ const Controls: React.FC<ControlsProps> = ({
           </Button>
         </Box>
       </Box>
-    </Box >
+    </Box>
   );
 };
 

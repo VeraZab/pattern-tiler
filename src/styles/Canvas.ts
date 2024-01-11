@@ -10,7 +10,7 @@ export const canvasContainerStyles = (theme: Theme) => ({
   [theme.breakpoints.down("md")]: {
     padding: theme.spacing(3.5),
     width: "100%",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   },
 });
 

@@ -10,7 +10,7 @@ export const controlsContainerStyles = (theme: Theme) => ({
     justifyContent: "start ",
     width: "100%",
     padding: theme.spacing(4),
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   },
 });
 
@@ -23,7 +23,7 @@ export const controlStyles = (theme: Theme) => ({
 
 export const uploadContainerStyles = (theme: Theme) => ({
   marginBottom: theme.spacing(1),
-  width: "100%"
+  width: "100%",
 });
 
 export const mainControlsContainer = (theme: Theme) => ({
@@ -35,7 +35,7 @@ export const mainActionsContainerStyles = (theme: Theme) => ({
   display: "flex",
   justifyContent: "start",
   width: "100%",
-})
+});
 
 export const canvasWidthStyles = (theme: Theme) => ({
   paddingRight: theme.spacing(1),
@@ -54,6 +54,3 @@ export const tileContainerStyles = (theme: Theme) => ({
 export const controlsTextStyles = {
   fontWeight: "bold",
 };
-
-
-

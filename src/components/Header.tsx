@@ -5,7 +5,7 @@ import {
   appTitleStyles,
   headerContainerStyles,
   leftHandSideContainerStyles,
-  logoStyles
+  logoStyles,
 } from "../styles/Header";
 
 const Header: React.FC = () => {
