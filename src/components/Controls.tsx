@@ -1,6 +1,6 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ReplayIcon from "@mui/icons-material/Replay";
-import { Box, Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Box, Button, IconButton, InputAdornment, TextField, Tooltip } from "@mui/material";
 import { ChangeEvent } from "react";
 
 import {
@@ -226,24 +226,30 @@ const Controls: React.FC<ControlsProps> = ({
 
           <Box sx={controlsTextStyles}>Tile Size</Box>
 
-          <IconButton
-            onClick={() => {
-              setTileState((prev) => ({
-                ...prev,
-                width: tileState.originalWidth,
-                height: tileState.originalHeight,
-              }));
-            }}
-            disabled={!tileState.originalHeight || !tileState.originalWidth}
-          >
-            <ReplayIcon />
-          </IconButton>
+
+          <Tooltip className="tooltip" title="Reset to original tile dimensions.">
+            <Box>
+              <IconButton
+                onClick={() => {
+                  setTileState((prev) => ({
+                    ...prev,
+                    width: tileState.originalWidth,
+                    height: tileState.originalHeight,
+                  }));
+                }}
+                disabled={!tileState.originalHeight || !tileState.originalWidth}
+              >
+                <ReplayIcon />
+              </IconButton>
+            </Box>
+          </Tooltip>
+
         </Box>
       </Box>
 
       <Box sx={mainActionsContainerStyles}>
         <Box sx={tileContainerStyles}>
-          <Button variant="contained" color="secondary" onClick={tile} >
+          <Button variant="outlined" onClick={tile} >
             Tile
           </Button>
         </Box>
@@ -254,7 +260,7 @@ const Controls: React.FC<ControlsProps> = ({
           </Button>
         </Box>
       </Box>
-    </Box>
+    </Box >
   );
 };
 
