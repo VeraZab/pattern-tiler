@@ -16,7 +16,7 @@ import {
   tileContainerStyles,
   uploadContainerStyles,
 } from "../styles/Controls";
-import { CanvasDimensions } from "../types/appState";
+import { CanvasDimensions, TileDimensions } from "../types/appState";
 import { ControlsProps } from "../types/controls";
 import ImageInput from "./ImageInput";
 
@@ -128,8 +128,7 @@ const Controls: React.FC<ControlsProps> = ({
   };
 
   const getProportionalDimension = (
-    currentWidth: number,
-    currentHeight: number,
+    tileState: TileDimensions,
     newWidth?: number | undefined,
     newHeight?: number | undefined,
   ) => {
@@ -137,16 +136,16 @@ const Controls: React.FC<ControlsProps> = ({
     let calculatedHeight = newHeight;
 
     if (newWidth) {
-      calculatedHeight = (currentHeight * newWidth) / currentWidth;
+      calculatedHeight = (tileState.originalHeight * newWidth) / tileState.originalWidth;
     }
 
     if (newHeight) {
-      calculatedWidth = (newHeight * currentWidth) / currentHeight;
+      calculatedWidth = (newHeight * tileState.originalWidth) / tileState.originalHeight;
     }
 
     return {
-      width: calculatedWidth ?? currentWidth,
-      height: calculatedHeight ?? currentHeight,
+      width: calculatedWidth ?? tileState.originalWidth,
+      height: calculatedHeight ?? tileState.originalHeight,
     };
   };
 
@@ -221,12 +220,18 @@ const Controls: React.FC<ControlsProps> = ({
             onChange={(e) => {
               if (canvasRef.current) {
                 const tileWidth = parseInt(e.target.value);
-                if (resizeProportionately) {
-                  const dimensions = getProportionalDimension(tileState.width, tileState.height, tileWidth, undefined);
+                if (resizeProportionately && tileWidth) {
+                  const dimensions = getProportionalDimension(tileState, tileWidth, undefined);
                   setTileState((prev) => ({
                     ...prev,
                     width: dimensions.width,
                     height: dimensions.height
+                  }));
+                } else if (!tileWidth) {
+                  setTileState((prev) => ({
+                    ...prev,
+                    width: NaN,
+                    height: NaN
                   }));
                 } else {
                   setTileState((prev) => ({
@@ -252,12 +257,18 @@ const Controls: React.FC<ControlsProps> = ({
             onChange={(e) => {
               if (canvasRef.current) {
                 const tileHeight = parseInt(e.target.value);
-                if (resizeProportionately) {
-                  const dimensions = getProportionalDimension(tileState.width, tileState.height, undefined, tileHeight);
+                if (resizeProportionately && tileHeight) {
+                  const dimensions = getProportionalDimension(tileState, undefined, tileHeight);
                   setTileState((prev) => ({
                     ...prev,
                     width: dimensions.width,
                     height: dimensions.height
+                  }));
+                } else if (!tileHeight) {
+                  setTileState((prev) => ({
+                    ...prev,
+                    height: NaN,
+                    width: NaN
                   }));
                 } else {
                   setTileState((prev) => ({
